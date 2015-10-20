@@ -56,15 +56,15 @@ namespace ImageContestSystem.Web
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "1646851195583502",
+               appSecret: "b91d70ddc787f879e9408397eb1750f9");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "206793758146-9afq2kf0suueu65u2cjll2n9mc4nb5j6.apps.googleusercontent.com",
+                ClientSecret = "kvUg9S8CSFhbJPmhdwXKO1pZ"
+            });
         }
     }
 }
