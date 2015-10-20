@@ -202,6 +202,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ContestsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -269,6 +270,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Contests\Create.cshtml" />
+    <Content Include="Views\Contests\Delete.cshtml" />
+    <Content Include="Views\Contests\Details.cshtml" />
+    <Content Include="Views\Contests\Edit.cshtml" />
+    <Content Include="Views\Contests\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

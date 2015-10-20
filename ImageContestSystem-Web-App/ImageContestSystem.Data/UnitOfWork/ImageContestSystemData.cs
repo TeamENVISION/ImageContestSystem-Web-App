@@ -50,6 +50,7 @@ namespace ImageContestSystem.Data.UnitOfWork
         {
             get { return this.GetRepository<Vote>(); }
         }
+
         public int SaveChanges()
         {
             return this.context.SaveChanges();
