@@ -1,0 +1,14 @@
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\ImageContestSystem.Models.dll.config
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\ImageContestSystem.Models.dll
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\ImageContestSystem.Models.pdb
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\EntityFramework.dll
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\EntityFramework.SqlServer.dll
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\EntityFramework.xml
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\EntityFramework.SqlServer.xml
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\obj\Debug\ImageContestSystem.Models.csprojResolveAssemblyReference.cache
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\obj\Debug\ImageContestSystem.Models.dll
+E:\SoftUni-Projects\TeamENVISON-ImageContestSystem\ImageContestSystem-Web-App\ImageContestSystem.Models\obj\Debug\ImageContestSystem.Models.pdb
