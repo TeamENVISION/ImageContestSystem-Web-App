@@ -15,9 +15,9 @@ namespace ImageContestSystem.Data.UnitOfWork
         private readonly IDictionary<Type, object> repositories;
 
         public ImageContestSystemData()
-            :this(new ImageContestSystemContext())
+            : this(new ImageContestSystemContext())
         {
-            
+
         }
 
         public ImageContestSystemData(ImageContestSystemContext context)
@@ -34,6 +34,22 @@ namespace ImageContestSystem.Data.UnitOfWork
             }
         }
 
+        public IRepository<Contest> Contest
+        {
+            get { return this.GetRepository<Contest>(); }
+        }
+        public IRepository<ContestStrategy> ContestStrategies
+        {
+            get { return this.GetRepository<ContestStrategy>(); }
+        }
+        public IRepository<Picture> Pictures
+        {
+            get { return this.GetRepository<Picture>(); }
+        }
+        public IRepository<Vote> Votes
+        {
+            get { return this.GetRepository<Vote>(); }
+        }
         public int SaveChanges()
         {
             return this.context.SaveChanges();

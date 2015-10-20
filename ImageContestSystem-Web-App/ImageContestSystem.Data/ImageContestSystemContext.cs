@@ -1,4 +1,5 @@
-﻿using ImageContestSystem.Models;
+﻿using System.Data.Entity;
+using ImageContestSystem.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ImageContestSystem.Data
@@ -14,5 +15,10 @@ namespace ImageContestSystem.Data
         {
             return new ImageContestSystemContext();
         }
+
+        public IDbSet<Contest> Contests { get; set; }
+        public IDbSet<ContestStrategy> ContestStrategies { get; set; }
+        public IDbSet<Picture> Pictures { get; set; }
+        public IDbSet<Vote> Votes { get; set; }
     }
 }

@@ -14,7 +14,7 @@
 
         public BaseController(IImageContestSystemData data)
         {
-            this.TwitterData = data;
+            this.ContestData = data;
         }
 
         public BaseController(IImageContestSystemData data, User userProfile)
@@ -23,7 +23,7 @@
             this.UserProfile = userProfile;
         }
 
-        protected IImageContestSystemData TwitterData { get; private set; }
+        protected IImageContestSystemData ContestData { get; private set; }
         protected User UserProfile { get; private set; }
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
@@ -31,7 +31,7 @@
             if (requestContext.HttpContext.User.Identity.IsAuthenticated)
             {
                 var username = requestContext.HttpContext.User.Identity.Name;
-                var user = this.TwitterData.Users.All().FirstOrDefault(x => x.UserName == username);
+                var user = this.ContestData.Users.All().FirstOrDefault(x => x.UserName == username);
                 this.UserProfile = user;
             }
 
