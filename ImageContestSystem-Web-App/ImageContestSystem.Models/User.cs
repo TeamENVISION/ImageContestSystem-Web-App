@@ -13,13 +13,14 @@ namespace ImageContestSystem.Models
 
         private ICollection<Contest> contestParticipants;
         private ICollection<Contest> contestVoters;
+        private ICollection<Picture> pictures;
 
 
         public User()
         {
             this.contestParticipants = new HashSet<Contest>();
             this.contestVoters = new HashSet<Contest>();
-
+            this.pictures = new HashSet<Picture>();
         }
 
         public ICollection<Contest> ContestParticipants
@@ -32,6 +33,11 @@ namespace ImageContestSystem.Models
         {
             get { return this.contestVoters; }
             set { this.contestVoters = value; }
+        }
+        public ICollection<Picture> Pictures
+        {
+            get { return this.pictures; }
+            set { this.pictures = value; }
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)

@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using ImageContestSystem.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -25,7 +26,7 @@ namespace ImageContestSystem.Data
         {
             modelBuilder.Entity<Contest>().
               HasMany(c => c.Participants).
-              WithMany(u => u.ContestParticipants).
+              WithMany(u => u.ContestParticipants).    
               Map(
                m =>
                {
@@ -45,6 +46,8 @@ namespace ImageContestSystem.Data
                    m.ToTable("ContestVoters");
                });
 
+           
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             base.OnModelCreating(modelBuilder);
         }
 
