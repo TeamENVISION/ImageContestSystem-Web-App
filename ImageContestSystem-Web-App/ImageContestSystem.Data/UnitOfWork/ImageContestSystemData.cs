@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ImageContestSystem.Data.Repository;
-using ImageContestSystem.Models;
-
-namespace ImageContestSystem.Data.UnitOfWork
+﻿namespace ImageContestSystem.Data.UnitOfWork
 {
+    using System;
+    using System.Collections.Generic;
+
+    using ImageContestSystem.Data.Repository;
+    using ImageContestSystem.Models;
+
     public class ImageContestSystemData : IImageContestSystemData
     {
         private readonly IImageContestSystemContext context;
@@ -17,7 +15,6 @@ namespace ImageContestSystem.Data.UnitOfWork
         public ImageContestSystemData()
             : this(new ImageContestSystemContext())
         {
-
         }
 
         public ImageContestSystemData(ImageContestSystemContext context)
@@ -36,19 +33,34 @@ namespace ImageContestSystem.Data.UnitOfWork
 
         public IRepository<Contest> Contest
         {
-            get { return this.GetRepository<Contest>(); }
+            get
+            {
+                return this.GetRepository<Contest>();
+            }
         }
+
         public IRepository<ContestStrategy> ContestStrategies
         {
-            get { return this.GetRepository<ContestStrategy>(); }
+            get
+            {
+                return this.GetRepository<ContestStrategy>();
+            }
         }
+        
         public IRepository<Picture> Pictures
         {
-            get { return this.GetRepository<Picture>(); }
+            get
+            {
+                return this.GetRepository<Picture>();
+            }
         }
+
         public IRepository<Vote> Votes
         {
-            get { return this.GetRepository<Vote>(); }
+            get
+            {
+                return this.GetRepository<Vote>();
+            }
         }
 
         public int SaveChanges()
