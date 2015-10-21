@@ -3,5 +3,6 @@ obj
 packages
 *.suo
 *.user
+*.StyleCop
 _ReSharper.*
 .DS_Store
