@@ -32,11 +32,11 @@
         [MaxLength(1000)]
         public string Description { get; set; }
 
-        [Required]
         public DateTime StartDate { get; set; }
 
-        [Required]
         public DateTime EndDate { get; set; }
+
+        public int VotesCount { get; set; }
 
         public bool HasEnded { get; set; }
 
@@ -45,7 +45,6 @@
 
         public virtual User Owner { get; set; }
 
-        [Required]
         public int ContestStrategyId { get; set; }
 
         public virtual ContestStrategy ContestStrategy { get; set; }

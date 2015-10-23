@@ -64,10 +64,10 @@
     <Compile Include="ContestStrategy.cs" />
     <Compile Include="Invitation.cs" />
     <Compile Include="Picture.cs" />
+    <Compile Include="Prize.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vote.cs" />
-    <Compile Include="VoterInvitation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

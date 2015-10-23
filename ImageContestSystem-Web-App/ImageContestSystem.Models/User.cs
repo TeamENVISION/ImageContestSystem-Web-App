@@ -22,6 +22,8 @@
             this.pictures = new HashSet<Picture>();
         }
 
+        public string FullName { get; set; }
+
         public virtual ICollection<Contest> ContestParticipants
         {
             get

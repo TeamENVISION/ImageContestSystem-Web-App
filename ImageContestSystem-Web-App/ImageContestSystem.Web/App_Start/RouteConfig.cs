@@ -14,6 +14,12 @@ namespace ImageContestSystem.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Pictures",
+                url: "pictures/{action}",
+                defaults: new { controller = "PicturesUpload", action = "Upload", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

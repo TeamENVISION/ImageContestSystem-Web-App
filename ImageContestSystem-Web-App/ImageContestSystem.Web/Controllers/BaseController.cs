@@ -25,9 +25,31 @@
             this.UserProfile = userProfile;
         }
 
-        protected IImageContestSystemData ContestData { get; private set; }
+        protected IImageContestSystemData ContestData
+        {
+            get
+            {
+                return this.data;
+            }
 
-        protected User UserProfile { get; private set; }
+            private set
+            {
+                this.data = value;
+            }
+        }
+
+        protected User UserProfile
+        {
+            get
+            {
+                return this.userProfile;
+            }
+
+            private set
+            {
+                this.userProfile = value;
+            }
+        }
 
         protected override IAsyncResult BeginExecute(
             RequestContext requestContext, 
