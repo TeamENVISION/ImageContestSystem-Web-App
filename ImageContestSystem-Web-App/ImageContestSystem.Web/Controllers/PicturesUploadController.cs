@@ -37,7 +37,7 @@
                     if (file != null && file.ContentLength > 0)
                     {
                         var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-                        var path = Path.Combine(Server.MapPath("~/UploadedFiles"), fileName);
+                        var path = Path.Combine(this.Server.MapPath("~/PictureFiles"), fileName);
                         file.SaveAs(path);
                         count++;
                     }

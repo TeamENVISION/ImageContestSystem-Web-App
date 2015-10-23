@@ -7,48 +7,51 @@
     <h1>ICM</h1>
 </div>
 
-@using (Ajax.BeginForm("Upload", "PicturesUpload", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
+<div id="status" class="alert-success text-center"></div>
+@using (Ajax.BeginForm("Upload", "PicturesUpload", null, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    <input type="file" name="files" id="fu1" />
-    <input type="submit" value="Upload File" />
 
+    <input type="file" name="files" style="visibility:hidden;" id="fu1" multiple /><br />
+    <div class="input-append">
+        <a class="btn btn-primary" onclick="$('#fu1').click();">Upload Pictures</a><br/>
+    </div><br/>
+    <ul class="list-group" id="files-list"></ul>
 }
 
 <div class="progress">
     <div class="progress-bar">0%</div>
 </div>
-<div id="status"></div>
-<style>
-    .progress {
-        position: relative;
-        width: 400px;
-        border: 1px solid #ddd;
-        padding: 1px;
-    }
-
-    .progress-bar {
-        width: 0px;
-        height: 20px;
-        background-color: #57be65;
-    }
-</style>
-
-
-
 
 
 @section Scripts
 {
+    <script src="http://malsup.github.com/jquery.form.js"></script>
 
-@Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $('#fu1').change(function() {
+            var file = $('<li class="list-group-item" id="subfile"></li>').html($(this).val());
+            $('.list-group').html(file);
+           
+        });
 
-<script src="http://malsup.github.com/jquery.form.js"></script>
-<script>
+        $("input[name=files]").change(function () {
+            var names = [];
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($('<li class="list-group-item" id="subfile"></li>').html($(this).get(0).files[i].name))
+            }
+            $('.list-group').html(names);
+            $('.list-group').append('<input type="submit" value="Upload" class="btn btn-primary" />');
+        });
+    </script>
+
+    <script>
     (function () {
         var bar = $('.progress-bar');
         var percent = $('.progress-bar');
         var status = $('#status');
+        var progress = $('.progress').hide();
+
 
         $('form').ajaxForm({
             beforeSend: function () {
@@ -58,6 +61,7 @@
                 percent.html(percentValue);
             },
             uploadProgress: function (event, position, total, percentComplete) {
+                progress.show();
                 var percentValue = percentComplete + '%';
                 bar.width(percentValue);
                 percent.html(percentValue);
@@ -67,44 +71,14 @@
                 bar.width(percentValue);
                 percent.html(percentValue);
                 $('#fu1').val('');
-                alert(d);
+                setTimeout(function () { progress.hide().fadeOut(500); }, 1000);
             },
             complete: function (xhr) {
                 status.html(xhr.responseText);
+                setTimeout(function () { status.hide("slow"); }, 1500);
+                $('#files-list').html('');
             }
         });
     })();
 </script>
-
-
-
-    @*<script type="text/javascript">
-        $(document).ready(function() {
-
-            $('#btnUploadFile').on('click', function() {
-
-                var data = new FormData();
-
-                var files = $("#fileUpload").get(0).files;
-
-                // Add the uploaded image content to the form data collection
-                if (files.length > 0) {
-                    data.append("UploadedImage", files[0]);
-                }
-
-                // Make Ajax request with the contentType = false, and procesDate = false
-                var ajaxRequest = $.ajax({
-                    type: "POST",
-                    url: "/pictures/upload",
-                    contentType: false,
-                    processData: false,
-                    data: data
-                });
-
-                ajaxRequest.done(function(xhr, textStatus) {
-                    $(".jumbotron").html("OK");
-                });
-            });
-        });
-    </script>*@
 }
