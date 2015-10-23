@@ -224,6 +224,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\InputModels\CreateContestInputModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\VoteViewModel.cs" />
     <Compile Include="Models\ViewModels\ContestViewModel.cs" />
@@ -386,7 +387,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\PictureFiles\" />
     <Folder Include="Content\uploads\" />
-    <Folder Include="Models\InputModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
