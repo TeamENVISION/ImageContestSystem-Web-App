@@ -1,0 +1,15 @@
+﻿
+@using (Ajax.BeginForm("Upload", "PicturesUpload", new {contestId = 1}, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <input type="file" name="files" style="visibility:hidden;" id="fu1" multiple /><br />
+    <div class="input-append">
+        <a class="btn btn-primary" onclick="$('#fu1').click();">Upload Pictures</a><br />
+    </div><br />
+    <ul class="list-group" id="files-list"></ul>
+}
+
+<div class="progress">
+    <div class="progress-bar">0%</div>
+</div>

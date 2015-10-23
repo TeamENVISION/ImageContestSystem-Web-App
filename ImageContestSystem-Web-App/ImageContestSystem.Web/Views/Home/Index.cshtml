@@ -1,4 +1,6 @@
-﻿
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<ImageContestSystem.Web.Models.ViewModels.ContestViewModel>
+
 @{
     ViewBag.Title = "Home Page";
 }
@@ -7,45 +9,36 @@
     <h1>ICM</h1>
 </div>
 
-<div id="status" class="alert-success text-center"></div>
-@using (Ajax.BeginForm("Upload", "PicturesUpload", null, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-
-    <input type="file" name="files" style="visibility:hidden;" id="fu1" multiple /><br />
-    <div class="input-append">
-        <a class="btn btn-primary" onclick="$('#fu1').click();">Upload Pictures</a><br/>
-    </div><br/>
-    <ul class="list-group" id="files-list"></ul>
-}
-
-<div class="progress">
-    <div class="progress-bar">0%</div>
+<div class="row">
+    @Html.DisplayFor(contest => contest)
 </div>
 
+@Html.Partial("_UploadButton")
 
-@section Scripts
-{
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+@section Scripts{
     <script src="http://malsup.github.com/jquery.form.js"></script>
 
-    <script>
-        $('#fu1').change(function() {
-            var file = $('<li class="list-group-item" id="subfile"></li>').html($(this).val());
-            $('.list-group').html(file);
-           
-        });
+<script>
+    $('#fu1').change(function () {
+        var file = $('<li class="list-group-item" id="subfile"></li>').html($(this).val());
+        $('.list-group').html(file);
 
-        $("input[name=files]").change(function () {
-            var names = [];
-            for (var i = 0; i < $(this).get(0).files.length; ++i) {
-                names.push($('<li class="list-group-item" id="subfile"></li>').html($(this).get(0).files[i].name))
-            }
-            $('.list-group').html(names);
-            $('.list-group').append('<input type="submit" value="Upload" class="btn btn-primary" />');
-        });
-    </script>
+    });
 
-    <script>
+    $("input[name=files]").change(function () {
+        var names = [];
+        for (var i = 0; i < $(this).get(0).files.length; ++i) {
+            names.push($('<li class="list-group-item" id="subfile"></li>').html($(this).get(0).files[i].name))
+        }
+        $('.list-group').html(names);
+        $('.list-group').append('<input type="submit" value="Upload" class="btn btn-primary" />');
+    });
+</script>
+
+<script>
     (function () {
         var bar = $('.progress-bar');
         var percent = $('.progress-bar');
@@ -62,6 +55,7 @@
             },
             uploadProgress: function (event, position, total, percentComplete) {
                 progress.show();
+                status.show();
                 var percentValue = percentComplete + '%';
                 bar.width(percentValue);
                 percent.html(percentValue);

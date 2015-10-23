@@ -23,6 +23,11 @@ textarea {
     max-width: 280px;
 }
 
+div#status {    
+    margin: 10px 0;
+    padding: 10px; 
+}
+
 .progress {
         position: relative;
         width: 400px;
