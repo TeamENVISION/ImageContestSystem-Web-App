@@ -30,7 +30,7 @@ namespace ImageContestSystem.Data.Migrations
                                         DeadlineStrategy = true,
                                         WinnerCount = 2
                                     },
-                                    VotesCount = 10
+                                  VotesCount = 10
                               };
             var contest2 = new Contest
             {
@@ -50,7 +50,7 @@ namespace ImageContestSystem.Data.Migrations
 
             context.Contests.Add(contest);
             context.Contests.Add(contest2);
-            
+
             context.SaveChanges();
         }
     }

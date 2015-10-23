@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using ImageContestSystem.Data;
 using ImageContestSystem.Models;
+using ImageContestSystem.Web.Models.InputModels;
+using Microsoft.AspNet.Identity;
 
 namespace ImageContestSystem.Web.Controllers
 {
@@ -22,98 +24,41 @@ namespace ImageContestSystem.Web.Controllers
             return View(contests.ToList());
         }
 
-        // GET: Contests/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Contest contest = db.Contests.Find(id);
-            if (contest == null)
-            {
-                return HttpNotFound();
-            }
-            return View(contest);
-        }
-
-        // GET: Contests/Create
         public ActionResult Create()
-        {
-            ViewBag.ContestStrategyId = new SelectList(db.ContestStrategies, "ContestStrategyId", "ContestStrategyId");
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email");
+        {    
             return View();
         }
 
-        // POST: Contests/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ContestId,Title,Description,StartDate,EndDate,HasEnded,OwnerId,ContestStrategyId")] Contest contest)
+        public ActionResult Create(CreateContestInputModel model)
         {
-            if (ModelState.IsValid)
+            var ownerId = this.User.Identity.GetUserId();
+
+            if (model != null && this.ModelState.IsValid)
             {
-                db.Contests.Add(contest);
-                db.SaveChanges();
+                var contest = new Contest()
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    VotesCount = model.VotesCount,
+                    OwnerId = ownerId,
+                    HasEnded = false,
+                    ContestStrategyId = 1,
+
+                };
+
+                this.db.Contests.Add(contest);
+                this.db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ContestStrategyId = new SelectList(db.ContestStrategies, "ContestStrategyId", "ContestStrategyId", contest.ContestStrategyId);
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email", contest.OwnerId);
-            return View(contest);
+            return View(model);
         }
 
-        // GET: Contests/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Contest contest = db.Contests.Find(id);
-            if (contest == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ContestStrategyId = new SelectList(db.ContestStrategies, "ContestStrategyId", "ContestStrategyId", contest.ContestStrategyId);
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email", contest.OwnerId);
-            return View(contest);
-        }
-
-        // POST: Contests/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ContestId,Title,Description,StartDate,EndDate,HasEnded,OwnerId,ContestStrategyId")] Contest contest)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(contest).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.ContestStrategyId = new SelectList(db.ContestStrategies, "ContestStrategyId", "ContestStrategyId", contest.ContestStrategyId);
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "Email", contest.OwnerId);
-            return View(contest);
-        }
-
-        // GET: Contests/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Contest contest = db.Contests.Find(id);
-            if (contest == null)
-            {
-                return HttpNotFound();
-            }
-            return View(contest);
-        }
-
+       
         // POST: Contests/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -125,13 +70,5 @@ namespace ImageContestSystem.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }
