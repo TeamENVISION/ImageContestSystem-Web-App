@@ -32,7 +32,11 @@
         {
             var conf = Mapper.Configuration;
             conf.CreateMap<Contest, ContestViewModel>()
-                .ForMember(c => c.PictureUrl, sr => sr.MapFrom(m => m.Pictures.OrderByDescending(d => d.PictureId).Select(p => p.Url).FirstOrDefault()));
+                .ForMember(
+                c => c.PicturesUrl,
+                sr => sr.MapFrom(m => m.Pictures.OrderByDescending(d => d.PictureId)
+                    .Select(p => p.Url)
+                    .Take(10)));
 
             var contests = this.ContestData.Contest
                 .All()
@@ -45,7 +49,7 @@
 
         public ActionResult About()
         {
-            this.ViewBag.Message = "Your application description page. And Team introduction.";
+            this.ViewBag.Message = "ICS description page and team introduction.";
 
             return this.View();
         }
