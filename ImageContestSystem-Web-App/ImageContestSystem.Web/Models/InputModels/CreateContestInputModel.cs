@@ -17,6 +17,24 @@ namespace ImageContestSystem.Web.Models.InputModels
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int VotesCount { get; set; }
-        public ICollection<User> Participants { get; set; }
+        public Contest Contests { get; set; }
+        public List<string> SelectedParticipants { get; set; }
+        public List<User> Users { get; set; }
+
+        public List<string> SelectedVoters { get; set; }
+
+        public CreateContestInputModel()
+        {
+            
+        }
+
+        public CreateContestInputModel(Contest _contest, List<User> _Users)
+        {
+            this.Contests = _contest;
+            this.Users = _Users;
+            SelectedParticipants = new List<string>();
+            SelectedVoters = new List<string>();
+        }
+
     }
 }
