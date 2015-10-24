@@ -1,0 +1,23 @@
+﻿@model System.Linq.IQueryable<ImageContestSystem.Web.Models.ViewModels.PictureViewModel>
+
+@{
+    ViewBag.Title = "Vote for picture";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>$title$</title>
+</head>
+<body>
+<div>
+    @{
+        foreach (var @picture in @Model)
+        {
+            <img src="@picture.Url" height="100px"/>
+        }
+    }
+</div>
+</body>
+</html>
