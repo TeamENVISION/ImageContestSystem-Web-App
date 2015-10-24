@@ -1,7 +1,30 @@
 ﻿@model ImageContestSystem.Web.Models.ViewModels.ContestViewModel
 
-<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-    @Html.ActionLink(@Model.Title, "Index", "Contest", new { Id = @Model.ContestId }, new { @class = "thumbnail"})
-        <img class="img-responsive" src="@Model.PictureUrl" alt="@Model.PictureUrl">
-        <p>@Model.Title</p>
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+                @foreach (var picture in Model.PicturesUrl)
+                {
+                    <div class="item">
+                        <a href="/Contests/Details/@Model.ContestId">
+                            <img src="@picture" alt="@picture"/>
+                            <div class="carousel-caption">
+                                <h3>@Model.Title</h3>
+                                <p>@Model.Description</p>
+                            </div>
+                        </a>
+                    </div>
+                }
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
 </div>

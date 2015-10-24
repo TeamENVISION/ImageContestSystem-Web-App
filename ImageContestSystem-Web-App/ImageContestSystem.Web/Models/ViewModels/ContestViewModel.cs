@@ -24,6 +24,6 @@
 
         public string OwnerUsername { get; set; }
 
-        public string PictureUrl { get; set; }
+        public ICollection<string> PicturesUrl { get; set; }
     }
 }
