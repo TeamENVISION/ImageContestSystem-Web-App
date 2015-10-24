@@ -15,11 +15,14 @@
 
         private ICollection<Picture> pictures;
 
+        private ICollection<Vote> votes;
+
         public User()
         {
             this.contestParticipants = new HashSet<Contest>();
             this.contestVoters = new HashSet<Contest>();
             this.pictures = new HashSet<Picture>();
+            this.votes = new HashSet<Vote>();
         }
 
         public string FullName { get; set; }
@@ -60,6 +63,18 @@
             set
             {
                 this.pictures = value;
+            }
+        }
+        public virtual ICollection<Vote> Votes
+        {
+            get
+            {
+                return this.votes;
+            }
+
+            set
+            {
+                this.votes = value;
             }
         }
 
