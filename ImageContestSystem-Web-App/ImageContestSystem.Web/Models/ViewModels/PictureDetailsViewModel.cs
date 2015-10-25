@@ -7,7 +7,7 @@
 
     public class PictureDetailsViewModel : IMapFrom<Picture>, IHaveCustomMappings
     {
-        public int Id { get; set; }
+        public int PictureId { get; set; }
 
         public string Author { get; set; }
         

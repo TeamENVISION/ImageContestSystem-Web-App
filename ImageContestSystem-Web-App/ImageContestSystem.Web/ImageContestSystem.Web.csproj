@@ -392,6 +392,7 @@
     <Content Include="Views\Shared\DisplayTemplates\VoteViewModel.cshtml" />
     <Content Include="Views\Vote\Contest.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\PrizeViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PictureDetailsViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

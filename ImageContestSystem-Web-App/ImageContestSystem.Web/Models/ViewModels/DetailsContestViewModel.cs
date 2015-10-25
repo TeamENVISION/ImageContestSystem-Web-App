@@ -8,7 +8,7 @@
     using ImageContestSystem.Common.Mapping;
     using ImageContestSystem.Models;
 
-    public class DetailsContestViewModel : IMapFrom<Contest>
+    public class DetailsContestViewModel : IMapFrom<Contest>, IHaveCustomMappings
     {
         public int ContestId { get; set; }
 
@@ -46,11 +46,11 @@
 
         public IEnumerable<PictureDetailsViewModel> Pictures { get; set; }
 
-        //public void CreateMappings(IConfiguration configuration)
-        //{
-        //    configuration.CreateMap<Contest, DetailsContestViewModel>()
-        //        .ForMember(c => c.ParticipantsCount, cd => cd.MapFrom(m => m.Participants.Count))
-        //        .ForMember(c => c.VotesCount, cd => cd.MapFrom(m => m.VotesCount));
-        //}
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<Contest, DetailsContestViewModel>()
+                .ForMember(c => c.ParticipantsCount, cd => cd.MapFrom(m => m.Participants.Count))
+                .ForMember(c => c.VotesCount, cd => cd.MapFrom(m => m.VotesCount));
+        }
     }
 }

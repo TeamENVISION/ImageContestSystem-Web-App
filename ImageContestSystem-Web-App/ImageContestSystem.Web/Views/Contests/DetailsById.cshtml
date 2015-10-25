@@ -4,7 +4,7 @@
 @model DetailsContestViewModel
 
 @{
-    ViewBag.Title = "DetailsById";
+    ViewBag.Title = Model.Title;
 
     if (this.User.IsInRole("admin") || this.User.Identity.GetUserId() == @Model.OwnerId)
     {
@@ -29,11 +29,16 @@
         </div>
         <p>Winner: @Model.WinnerCount</p>
         <h4>Prizes: @Html.DisplayFor(c => c.Prizes)</h4>
+        Pictures:
+        <div class="row">
+            <p>@Html.DisplayFor(p => p.Pictures)</p>
+        </div>
+        <p>
+            <span class="text-success">Start Date: @Model.StartDate</span>
+        </p>
     </div>
-    <p>
-        <span class="text-success">Start Date: @Model.StartDate</span>
-    </p>
 </div>
+<div id="status"></div>
 <p>
     @using (Ajax.BeginForm("Upload", "Pictures", new { contestId = Model.ContestId }, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
     {
@@ -50,7 +55,7 @@
         <div class="progress-bar">0%</div>
     </div>
 
-    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
+    @Html.ActionLink("Go to my contests", "Index", null, new { @class = "btn btn-info" })
 </p>
 
 @section Scripts{
@@ -107,7 +112,7 @@
                         status.html($('<div/>').html(xhr.responseText).addClass('alert alert-info'));
                     }
                     $('#files-list').html('');
-                    //setTimeout(function() { status.empty(); }, 1500);
+                    setTimeout(function() { status.empty(); }, 1500);
                 }
             });
         })();

@@ -11,6 +11,6 @@
 
         public string Description { get; set; }
 
-        // public string WinnerUserName { get; set; }
+        public string WinnerUserName { get; set; }
     }
 }
