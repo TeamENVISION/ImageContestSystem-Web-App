@@ -5,6 +5,7 @@
 
     public class PictureViewModel : IMapFrom<Picture>
     {
+        public int PictureId { get; set; }
         public string Url { get; set; }
     }
 }
