@@ -19,5 +19,9 @@
         public int ContestId { get; set; }
 
         public virtual Contest Contest { get; set; }
+        
+        public string WinnerId { get; set; }
+
+        public virtual User Winner { get; set; }
     }
 }

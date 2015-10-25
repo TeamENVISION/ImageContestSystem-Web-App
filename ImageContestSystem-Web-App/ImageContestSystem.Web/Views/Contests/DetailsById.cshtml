@@ -1,33 +1,123 @@
-﻿@using Microsoft.AspNet.Identity
-@model ImageContestSystem.Web.Models.ViewModels.DetailsContestViewModel
+﻿@using ImageContestSystem.Models
+@using ImageContestSystem.Web.Models.ViewModels
+@using Microsoft.AspNet.Identity
+@model DetailsContestViewModel
 
 @{
     ViewBag.Title = "DetailsById";
-    
-    if (this.User.IsInRole("admin") || this.User.Identity.GetUserId() == @Model.OwnewId)
+
+    if (this.User.IsInRole("admin") || this.User.Identity.GetUserId() == @Model.OwnerId)
     {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.ContestId }, new {@class = "btn btn-primary"});
+        Html.ActionLink("Edit", "Edit", new { id = Model.ContestId }, new {@class = "btn btn-primary"});
     }
 }
 
 <div class="row text-center">
     <div class="row" id="box-search">
         <div class="thumbnail text-center">
-            <img src="@Model.Pictures.OrderByDescending(p => p.VotesCount).First().Url" alt="Most liked pictures" class="img-responsive">
+            <img src="@Model.Pictures.OrderByDescending(p => p.VotesCount).FirstOrDefault().Url" alt="Most liked pictures" class="img-responsive">
             <div class="caption">
                 <h3>@Model.Title</h3>
                 <p>@Model.Description</p>
-                <span class="img-circle"><p> </p>@Model.DaysLeft <p>days left</p></span>
+                <ul class="list-inline circle-list">
+                    <li><span class="img-circle"><p> </p>@Model.DaysLeft <p>days left</p></span></li>
+                    <li><span class="img-circle"><p> </p>@Model.PicturesCount <p>pictures</p></span></li>
+                    <li><span class="img-circle"><p> </p>@Model.VotesCount <p>votes</p></span></li>
+                    <li><span class="img-circle"><p> </p>@Model.ParticipantsCount <p>practicans</p></span></li>
+                </ul>
             </div>
         </div>
         <p>Winner: @Model.WinnerCount</p>
-        <p>Prize: @Model.PrizesName</p>
+        <h4>Prizes: @Html.DisplayFor(c => c.Prizes)</h4>
     </div>
     <p>
         <span class="text-success">Start Date: @Model.StartDate</span>
     </p>
 </div>
-
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @using (Ajax.BeginForm("Upload", "Pictures", new { contestId = Model.ContestId }, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <input type="file" name="files" style="visibility:hidden; display: none;" id="fu1" multiple />
+        <div class="input-append">
+            <a class="btn btn-primary" onclick="$('#fu1').click();">Participate with your Pictures</a>
+        </div>
+        <ul class="list-group" id="files-list"></ul>
+    }
+
+    <div class="progress">
+        <div class="progress-bar">0%</div>
+    </div>
+
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
 </p>
+
+@section Scripts{
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+
+    <script>
+        $('#fu1').change(function() {
+            var file = $('<li class="list-group-item" id="subfile"></li>').html($(this).val());
+            $('.list-group').html(file);
+
+        });
+
+        $("input[name=files]").change(function() {
+            var names = [];
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($('<li class="list-group-item" id="subfile"></li>').html($(this).get(0).files[i].name))
+            }
+            $('.list-group').html(names);
+            $('.list-group').append('<input type="submit" value="Upload" class="btn btn-primary" />');
+        });
+
+        (function() {
+            var bar = $('.progress-bar');
+            var percent = $('.progress-bar');
+            var status = $('#status');
+            var progress = $('.progress').hide();
+
+
+            $('form').ajaxForm({
+                beforeSend: function() {
+                    status.empty();
+                    var percentValue = '0%';
+                    bar.width(percentValue);
+                    percent.html(percentValue);
+                },
+                uploadProgress: function(event, position, total, percentComplete) {
+                    progress.show();
+                    var percentValue = percentComplete + '%';
+                    bar.width(percentValue);
+                    percent.html(percentValue);
+                },
+                success: function(d) {
+                    var percentValue = '100%';
+                    bar.width(percentValue);
+                    percent.html(percentValue);
+                    $('#fu1').val('');
+                    setTimeout(function() { progress.hide().fadeOut(500); }, 1000);
+                },
+                complete: function (xhr) {
+                    console.log(xhr.responseText);
+                    if (xhr.responseText == '"error"') {
+                        status.html($('<div/>').html('Fail upload was unsuccessfull.').addClass('alert alert-danger'));
+                    } else {
+                        status.html($('<div/>').html(xhr.responseText).addClass('alert alert-info'));
+                    }
+                    $('#files-list').html('');
+                    //setTimeout(function() { status.empty(); }, 1500);
+                }
+            });
+        })();
+    </script>
+
+    <script>
+        $.each($('.col-xs-12'), function(i) {
+            $("#myCarousel").attr('id', 'myCarousel' + i);
+            $('#myCarousel' + i + ' .carousel-inner .carousel-control').attr('href', '#myCarousel' + i);
+            $('#myCarousel' + i + ' .carousel-inner div:first').addClass('active');
+        });
+    </script>
+}

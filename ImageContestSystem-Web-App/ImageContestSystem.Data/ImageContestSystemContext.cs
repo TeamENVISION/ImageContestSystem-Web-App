@@ -22,6 +22,8 @@
 
         public IDbSet<Notification> Notifications { get; set; }
 
+        public IDbSet<Prize> Prizes { get; set; }
+
         public static ImageContestSystemContext Create()
         {
             return new ImageContestSystemContext();

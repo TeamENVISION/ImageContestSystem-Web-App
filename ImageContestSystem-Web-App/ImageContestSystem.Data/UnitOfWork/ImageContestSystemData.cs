@@ -39,11 +39,11 @@
             }
         }
 
-        public IRepository<ContestStrategy> ContestStrategies
+        public IRepository<Prize> Prizes
         {
             get
             {
-                return this.GetRepository<ContestStrategy>();
+                return this.GetRepository<Prize>();
             }
         }
         

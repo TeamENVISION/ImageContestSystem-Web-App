@@ -24,7 +24,7 @@
 
         public string Owner { get; set; }
 
-        public string OwnewId { get; set; }
+        public string OwnerId { get; set; }
 
         public ContestStatus Status { get; set; }
 
@@ -42,17 +42,15 @@
 
         public int WinnerCount { get; set; }
 
-        public IEnumerable<string> PrizesName { get; set; }
+        public IEnumerable<PrizeViewModel> Prizes { get; set; }
 
         public IEnumerable<PictureDetailsViewModel> Pictures { get; set; }
 
-        public void CreateMappings(IConfiguration configuration)
-        {
-            configuration.CreateMap<Contest, DetailsContestViewModel>()
-                .ForMember(c => c.ParticipationType, cd => cd.MapFrom(m => m.ParticipationType))
-                .ForMember(c => c.ParticipantsCount, cd => cd.MapFrom(m => m.Participants.Count))
-                .ForMember(c => c.VotingType, cd => cd.MapFrom(m => m.VotingType))
-                .ForMember(c => c.Status, cd => cd.MapFrom(m => m.ContestStatus));
-        }
+        //public void CreateMappings(IConfiguration configuration)
+        //{
+        //    configuration.CreateMap<Contest, DetailsContestViewModel>()
+        //        .ForMember(c => c.ParticipantsCount, cd => cd.MapFrom(m => m.Participants.Count))
+        //        .ForMember(c => c.VotesCount, cd => cd.MapFrom(m => m.VotesCount));
+        //}
     }
 }

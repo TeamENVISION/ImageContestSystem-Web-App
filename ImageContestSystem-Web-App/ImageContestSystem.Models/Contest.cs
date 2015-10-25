@@ -12,6 +12,8 @@
 
         private ICollection<User> voters;
 
+        private ICollection<Prize> prizes;
+
         public Contest()
         {
             this.participants = new HashSet<User>();
@@ -37,6 +39,8 @@
         public DateTime EndDate { get; set; }
 
         public int VotesCount { get; set; }
+
+        public int WinnersCount { get; set; }
 
         public bool HasEnded { get; set; }
 
@@ -93,6 +97,19 @@
             set
             {
                 this.pictures = value;
+            }
+        }
+
+        public virtual ICollection<Prize> Prizes
+        {
+            get
+            {
+                return this.prizes;
+            }
+
+            set
+            {
+                this.prizes = value;
             }
         }
     }
