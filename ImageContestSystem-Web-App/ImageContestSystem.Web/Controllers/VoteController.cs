@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using ImageContestSystem.Data.UnitOfWork;
-using ImageContestSystem.Models;
-using ImageContestSystem.Web.Models.ViewModels;
-using Microsoft.AspNet.Identity;
-
-namespace ImageContestSystem.Web.Controllers
+﻿namespace ImageContestSystem.Web.Controllers
 {
+    using System.Linq;
+    using System.Web.Mvc;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+    using ImageContestSystem.Data.UnitOfWork;
+    using ImageContestSystem.Models;
+    using ImageContestSystem.Web.Models.ViewModels;
+    using Microsoft.AspNet.Identity;
+
     [Authorize]
     public class VoteController : BaseController
     {
@@ -24,6 +21,7 @@ namespace ImageContestSystem.Web.Controllers
             : base(data, userProfile)
         {
         }
+
         // GET: Available contests for voting
         public ActionResult Index()
         {
@@ -35,18 +33,18 @@ namespace ImageContestSystem.Web.Controllers
                     .MapFrom(m => m.VotesCount - m.Pictures
                         //.Where(p=> p.ContestId == m.ContestId)
                     .SelectMany(v => v.Votes)
-                    .Count(vo => vo.ParticipantId == userId && vo.Picture.ContestId == m.ContestId)));
+                    .Count(vo => vo.VoterId == userId && vo.Picture.ContestId == m.ContestId)));
 
 
             var contests = this.ContestData.Contest.All()
-                .Where(c => (c.Voters.Any(v => v.Id == userId) || c.ContestStrategy.VotingStrategy == false) && c.HasEnded == false)
+                .Where(c => (c.Voters.Any(v => v.Id == userId) || c.VotingType == VotingType.Open) && c.HasEnded == false)
                 .Project()
                 .To<VoteViewModel>();
 
             return View(contests);
         }
 
-        //GET: All pictures from a single contest that you can vote to
+        // GET: All pictures from a single contest that you can vote to
         public ActionResult Contest(int id)
         {
             string userId = this.User.Identity.GetUserId();
@@ -57,7 +55,7 @@ namespace ImageContestSystem.Web.Controllers
                 return HttpNotFound();
             }
 
-            bool canVote = contest.ContestStrategy.VotingStrategy == false || contest.Voters.Any(v => v.Id == userId);
+            bool canVote = contest.VotingType == VotingType.Open || contest.Voters.Any(v => v.Id == userId);
 
             if (!canVote)
             {
@@ -82,7 +80,7 @@ namespace ImageContestSystem.Web.Controllers
                 return HttpNotFound();
             }
 
-            bool canVote = picture.Contest.ContestStrategy.VotingStrategy == false ||
+            bool canVote = picture.Contest.VotingType == VotingType.Open ||
                            picture.Contest.Participants.Any(p => p.Id == userId);
 
             if (!canVote)
@@ -90,21 +88,21 @@ namespace ImageContestSystem.Web.Controllers
                 return HttpNotFound();
             }
 
-            var vote = picture.Votes.FirstOrDefault(p => p.ParticipantId == userId && p.PictureId == id);
+            var vote = picture.Votes.FirstOrDefault(p => p.VoterId == userId && p.PictureId == id);
 
             if (vote == null)
             {
-                int availableVotes = picture.Contest.VotesCount - picture.Votes.Count(p => p.ParticipantId == userId);
+                int availableVotes = picture.Contest.VotesCount - picture.Votes.Count(p => p.VoterId == userId);
                 if (availableVotes >= 1)
                 {
                     Vote newVote = new Vote();
-                    newVote.ParticipantId = userId;
+                    newVote.VoterId = userId;
                     newVote.PictureId = id;
                     this.ContestData.Votes.Add(newVote);
                 }
                 else
                 {
-                    return HttpNotFound();
+                    return this.HttpNotFound();
                 }
             }
             else
@@ -112,7 +110,8 @@ namespace ImageContestSystem.Web.Controllers
                 this.ContestData.Votes.Delete(vote);
             }
             this.ContestData.SaveChanges();
-            return HttpNotFound();
+
+            return this.HttpNotFound();
         }
     }
 
