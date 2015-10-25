@@ -7,6 +7,7 @@ namespace ImageContestSystem.Models
     public class Picture
     {
         private ICollection<Vote> votes;
+
         public Picture()
         {
             this.votes = new HashSet<Vote>();
@@ -16,9 +17,9 @@ namespace ImageContestSystem.Models
         public int PictureId { get; set; }
 
         [Required]
-        public string ParticipantId { get; set; }
+        public string UploaderId { get; set; }
 
-        public virtual User Participant { get; set; }
+        public virtual User Uploader { get; set; }
 
         [Required]
         public int ContestId { get; set; }
@@ -28,7 +29,7 @@ namespace ImageContestSystem.Models
         [Required]
         public string Url { get; set; }
 
-        public ICollection<Vote> Votes
+        public virtual ICollection<Vote> Votes
         {
             get { return this.votes; }
             set { this.votes = value; }

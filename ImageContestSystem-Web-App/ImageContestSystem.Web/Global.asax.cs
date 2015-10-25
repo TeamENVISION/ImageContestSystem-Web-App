@@ -17,6 +17,9 @@
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(new RazorViewEngine());
+
             var autoMapper = new AutoMapperConfig(new[] { Assembly.GetExecutingAssembly() });
             autoMapper.Execute();
         }

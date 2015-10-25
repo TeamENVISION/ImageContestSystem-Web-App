@@ -1,5 +1,5 @@
 ﻿
-@using (Ajax.BeginForm("Upload", "PicturesUpload", new {contestId = 1}, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
+@using (Ajax.BeginForm("Upload", "Pictures", new {contestId = 1}, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 

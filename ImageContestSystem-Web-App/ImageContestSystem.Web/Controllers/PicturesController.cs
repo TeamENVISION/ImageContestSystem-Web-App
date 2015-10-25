@@ -10,6 +10,7 @@
     using ImageContestSystem.Data.UnitOfWork;
     using ImageContestSystem.Models;
     
+    [Authorize]
     public class PicturesController : BaseController
     {
         private const string PicturePath = "/Content/PictureFiles/";
@@ -40,7 +41,6 @@
                     if (file == null || file.ContentLength == 0 || !IsImage(file))
                     {
                         return new JsonResult { Data = "error" };
-                        return new JsonResult { Data = "Unsuccessfull file(s) upload" };
                     }
 
                     var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
@@ -50,7 +50,7 @@
                     contest.Pictures.Add(new Picture
                     {
                         Url = PicturePath + fileName,
-                        Participant = this.UserProfile
+                        Uploader = this.UserProfile
                     });
                     count++;
                 }

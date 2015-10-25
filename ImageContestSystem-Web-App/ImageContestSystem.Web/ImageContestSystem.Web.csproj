@@ -226,6 +226,8 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\InputModels\CreateContestInputModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ViewModels\DetailsContestViewModel.cs" />
+    <Compile Include="Models\ViewModels\PictureDetailsViewModel.cs" />
     <Compile Include="Models\ViewModels\VoteViewModel.cs" />
     <Compile Include="Models\ViewModels\ContestViewModel.cs" />
     <Compile Include="Models\ViewModels\PictureViewModel.cs" />
@@ -379,7 +381,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Contests\Create.cshtml" />
     <Content Include="Views\Contests\Delete.cshtml" />
-    <Content Include="Views\Contests\Details.cshtml" />
+    <Content Include="Views\Contests\DetailsById.cshtml" />
     <Content Include="Views\Contests\Edit.cshtml" />
     <Content Include="Views\Contests\Index.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />

@@ -8,9 +8,9 @@
         public int VoteId { get; set; }
 
         [Required]
-        public string ParticipantId { get; set; }
+        public string VoterId { get; set; }
 
-        public virtual User Participant { get; set; }
+        public virtual User Voter { get; set; }
 
         [Required]
         public int PictureId { get; set; }

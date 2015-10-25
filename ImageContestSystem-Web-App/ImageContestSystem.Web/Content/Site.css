@@ -35,3 +35,29 @@ textarea {
         height: 20px;
         background-color: #57be65;
     }
+
+.thumbnail {
+    position: relative;
+    border: none;
+}
+
+.caption {
+    position: absolute;
+    top: 45%;
+    left: 0;
+    width: 100%;
+}
+
+.thumbnail .caption {
+    color: #dddddd;
+}
+
+.img-circle {
+    margin-left: 450px;
+    margin-top: 35px;
+    width: 75px;
+    border-radius: 50%;
+    height: 75px;
+    background: rgba(0, 0, 0, 0.5);
+    display: inline-block;
+}

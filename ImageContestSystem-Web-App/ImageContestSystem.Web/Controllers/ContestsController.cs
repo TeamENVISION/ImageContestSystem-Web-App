@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-using ImageContestSystem.Data;
-using ImageContestSystem.Data.UnitOfWork;
-using ImageContestSystem.Models;
-using ImageContestSystem.Web.Models.InputModels;
-using Microsoft.AspNet.Identity;
-
-namespace ImageContestSystem.Web.Controllers
+﻿namespace ImageContestSystem.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using AutoMapper;
+
+    using ImageContestSystem.Data.UnitOfWork;
+    using ImageContestSystem.Models;
+    using ImageContestSystem.Web.Models.InputModels;
+    using ImageContestSystem.Web.Models.ViewModels;
+
+    using Microsoft.AspNet.Identity;
+
     public class ContestsController : BaseController
     {
         public ContestsController(IImageContestSystemData data)
@@ -26,21 +25,40 @@ namespace ImageContestSystem.Web.Controllers
             : base(data, userProfile)
         {
         }
+
         // GET: Contests
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
+        // GET: Contests/{contestId}
+        public ActionResult DetailsById(int id)
+        {
+            var contest = Mapper
+                .Map<DetailsContestViewModel>(this.ContestData.Contest.Find(id));
+            
+            if (contest == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            var daysLeft = contest.EndDate - DateTime.Now;
+            contest.DaysLeft = daysLeft.Days;
+
+            return this.View(contest);
+        }
+
+        [HttpGet]
         public ActionResult Create()
         {
             var contest = new Contest();
             var users = this.ContestData.Users.All().ToList();
-            CreateContestInputModel inputModel = new CreateContestInputModel(contest,users);
-            return View(inputModel);
+            CreateContestInputModel inputModel = new CreateContestInputModel(contest, users);
+
+            return this.View(inputModel);
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateContestInputModel model)
@@ -54,18 +72,17 @@ namespace ImageContestSystem.Web.Controllers
             {
                 foreach (var id in model.SelectedParticipants)
                 {
-                    var user = this.ContestData.Users.All().Where(u => u.Id == id).First();
+                    var user = this.ContestData.Users.All().First(u => u.Id == id);
                     getParticipants.Add(user);
-                    
                 }
             }
+
             if (model.SelectedVoters != null)
             {
                 foreach (var id in model.SelectedVoters)
                 {
-                    var user = this.ContestData.Users.All().Where(u => u.Id == id).First();
+                    var user = this.ContestData.Users.All().First(u => u.Id == id);
                     getVoters.Add(user);
-
                 }
             }
           
@@ -80,18 +97,18 @@ namespace ImageContestSystem.Web.Controllers
                     VotesCount = model.VotesCount,
                     OwnerId = ownerId,
                     HasEnded = false,
-                    ContestStrategyId = 1,
+                    ContestStatus = ContestStatus.Active,
                     Participants = getParticipants,
                     Voters = getVoters
-                   
                 };
               
                 this.ContestData.Contest.Add(contest);
                 this.ContestData.SaveChanges();
-                return RedirectToAction("Index");
+                
+                return this.RedirectToAction("Index");
             }
-            return View(model);
-        }
 
+            return this.View(model);
+        }
     }
 }

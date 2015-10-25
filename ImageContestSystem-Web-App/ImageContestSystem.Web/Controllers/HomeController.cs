@@ -30,14 +30,6 @@
 
         public ActionResult Index(int page = DefaultPage)
         {
-            var conf = Mapper.Configuration;
-            conf.CreateMap<Contest, ContestViewModel>()
-                .ForMember(
-                c => c.PicturesUrl,
-                sr => sr.MapFrom(m => m.Pictures.OrderByDescending(d => d.PictureId)
-                    .Select(p => p.Url)
-                    .Take(10)));
-
             var contests = this.ContestData.Contest
                 .All()
                 .OrderByDescending(c => c.EndDate)

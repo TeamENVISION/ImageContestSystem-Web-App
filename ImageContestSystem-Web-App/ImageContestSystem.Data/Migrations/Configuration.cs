@@ -18,20 +18,19 @@ namespace ImageContestSystem.Data.Migrations
         protected override void Seed(ImageContestSystemContext context)
         {
             var contest = new Contest
-                              {
-                                  Owner = context.Users.FirstOrDefault(u => u.UserName == "bucanero"),
-                                  StartDate = DateTime.Now,
-                                  EndDate = DateTime.Now.AddDays(20),
-                                  HasEnded = false,
-                                  Title = "Iceland landscape contest",
-                                  Description = "Some cool description for this contest. Description.",
-                                  ContestStrategy = new ContestStrategy
-                                    {
-                                        DeadlineStrategy = true,
-                                        WinnerCount = 2
-                                    },
-                                  VotesCount = 10
-                              };
+            {
+                Owner = context.Users.FirstOrDefault(u => u.UserName == "bucanero"),
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(20),
+                HasEnded = false,
+                Title = "Iceland landscape contest",
+                Description = "Some cool description for this contest. Description.",
+                ContestStatus = ContestStatus.Dismissed,
+                DeadlineType = DeadlineType.PracticantsLimit,
+                VotingType = VotingType.Close,
+                VotesCount = 10
+            };
+
             var contest2 = new Contest
             {
                 Owner = context.Users.FirstOrDefault(u => u.UserName == "bucanero"),
@@ -40,11 +39,9 @@ namespace ImageContestSystem.Data.Migrations
                 HasEnded = false,
                 Title = "Iceland landscape contest2",
                 Description = "Some cool description for this contest. Description.2",
-                ContestStrategy = new ContestStrategy
-                {
-                    DeadlineStrategy = true,
-                    WinnerCount = 1
-                },
+                ContestStatus = ContestStatus.Active,
+                DeadlineType = DeadlineType.EndDate,
+                VotingType = VotingType.Open,
                 VotesCount = 20
             };
 

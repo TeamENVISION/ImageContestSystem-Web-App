@@ -7,7 +7,7 @@
                 @foreach (var picture in Model.PicturesUrl)
                 {
                     <div class="item">
-                        <a href="/Contests/Details/@Model.ContestId">
+                        <a href="/Contest/@Model.ContestId">
                             <img src="@picture" alt="@picture"/>
                             <div class="carousel-caption">
                                 <h3>@Model.Title</h3>

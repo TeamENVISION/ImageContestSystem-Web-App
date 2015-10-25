@@ -28,7 +28,7 @@
         public string Title { get; set; }
 
         [Required]
-        [MinLength(30)]
+        [MinLength(10)]
         [MaxLength(1000)]
         public string Description { get; set; }
 
@@ -45,9 +45,17 @@
 
         public virtual User Owner { get; set; }
 
-        public int ContestStrategyId { get; set; }
+        [Required]
+        public ContestStatus ContestStatus { get; set; }
 
-        public virtual ContestStrategy ContestStrategy { get; set; }
+        [Required]
+        public VotingType VotingType { get; set; }
+
+        [Required]
+        public ParticipationType ParticipationType { get; set; }
+
+        [Required]
+        public DeadlineType DeadlineType { get; set; }
 
         public virtual ICollection<User> Participants
         {
