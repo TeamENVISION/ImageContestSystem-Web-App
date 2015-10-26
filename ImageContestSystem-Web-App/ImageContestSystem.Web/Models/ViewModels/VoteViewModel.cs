@@ -26,5 +26,7 @@
 
         public string OwnerUsername { get; set; }
 
+        public string PictureUrl { get; set; }
+
     }
 }

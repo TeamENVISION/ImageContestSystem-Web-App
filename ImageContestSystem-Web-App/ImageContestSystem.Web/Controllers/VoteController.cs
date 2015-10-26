@@ -32,7 +32,8 @@
                 .ForMember(c => c.AvailableVotes, sr => sr
                     .MapFrom(m => m.VotesCount - m.Pictures
                     .SelectMany(pi => pi.Votes)
-                    .Count(p => p.VoterId == userId)));
+                    .Count(p => p.VoterId == userId)))
+                .ForMember(c => c.PictureUrl, sr=> sr.MapFrom(m=>m.Pictures.FirstOrDefault().Url));
 
 
             var contests = this.ContestData.Contest.All()
@@ -64,7 +65,8 @@
             var conf = Mapper.Configuration;
             conf.CreateMap<Picture, PictureViewModel>()
                 .ForMember(p=> p.VotesCount, sr=> sr.MapFrom(m=> m.Votes.Count))
-                .ForMember(p=> p.hasVoted, sr=> sr.MapFrom(m=> m.Votes.Any(v=>v.VoterId==userId)));
+                .ForMember(p=> p.HasVoted, sr=> sr.MapFrom(m=> m.Votes.Any(v=>v.VoterId==userId)))
+                .ForMember(p=>p.UploaderUsername, sr=> sr.MapFrom(m=> m.Uploader.UserName));
 
             var pictures = contest.Pictures.AsQueryable().Project().To<PictureViewModel>();
             return View(pictures);

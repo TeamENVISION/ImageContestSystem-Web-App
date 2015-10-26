@@ -3,49 +3,65 @@
 @{
     ViewBag.Title = "Vote for picture";
 }
-@foreach (var picture in @Model)
-{
-    <div id="votes">
-
-        <div>
-            <img src="@picture.Url" height="150px" /><br />
-            Votes: <span id="votes-count-@picture.PictureId"> @picture.VotesCount </span>
-            @using (Ajax.BeginForm("Vote", "Vote", new { pictureId = picture.PictureId }, new AjaxOptions()
-            {
-                HttpMethod = "POST",
-                UpdateTargetId = "votes-count-" + @picture.PictureId,
-                InsertionMode = InsertionMode.Replace,
-                OnSuccess = "onVotePassed()",
-                OnFailure = "onVoteFailed()"
-            }))
-            {
-                if (@picture.hasVoted)
-                {
-                    <input type="submit" value="Unlike" />
-                }
-                else
-                {
-                    <input type="submit" value="Like" />
-                }
 
 
-            }
 
-        </div>
+<div class="well">
+    <div class="col-lg-12">
+        <h1 style="margin: 0" class="page-header text-center">Contests Vote</h1>
     </div>
-}
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <link href="/Content/chosen.css" rel="stylesheet" type="text/css">
-    <script src="@Url.Content("~/Scripts/chosen.jquery.js")" type="text/javascript"></script>
-    <script>
-        function onVotePassed() {
-            alert("Successfull Voting!");
-        }
-        function onVoteFailed() {
-            alert("Voting failed! You don't have enough available votes!");
-        }
+    <div class="row">
+        @foreach (var picture in @Model)
+        {
+
+            <div class="col-xs-6">
+                <div class="thumbnail thumb" id="votes">
+                    <img src="@picture.Url"/>
+                    <div class="caption">
+                        Votes: <span id="votes-count-@picture.PictureId"> @picture.VotesCount </span> Uploader: @picture.UploaderUsername
+                        @using (Ajax.BeginForm("Vote", "Vote", new { pictureId = picture.PictureId }, new AjaxOptions()
+                        {
+                            HttpMethod = "POST",
+                            UpdateTargetId = "votes-count-" + @picture.PictureId,
+                            InsertionMode = InsertionMode.Replace,
+                            OnSuccess = "onVotePassed()",
+                            OnFailure = "onVoteFailed()"
+                        }))
+                        {
+                            if (@picture.HasVoted)
+                            {
+                                <input type="submit" class="btn btn-primary" value="Unlike" />
+                            }
+                            else
+                            {
+                                <input type="submit" class="btn btn-primary" value="Like" />
+                            }
+                        }
+                    </div>
+
+                        </div>
+                    </div>
+                    }
+                    @section Scripts {
+                        @Scripts.Render("~/bundles/jqueryval")
+                        <script src="@Url.Content("~/Scripts/chosen.jquery.js")" type="text/javascript"></script>
+
+                        <script>
+                            function onVotePassed()
+                            {
+                                $.notify("Vote Successful!",
+                                    {newest_on_top: true},
+                                    { type: 'success' });
+                            }
+
+                            function onVoteFailed() {
+                                $.notify("You don't have enough available votes!",
+                                    { newest_on_top: true },
+                                    { type: 'danger' });
+                            }
 
 
-    </script>
-}
+                        </script>
+                    }
+                </div>
+            </div>
