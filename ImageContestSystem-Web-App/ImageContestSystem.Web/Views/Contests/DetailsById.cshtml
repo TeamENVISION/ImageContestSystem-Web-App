@@ -39,24 +39,29 @@
     </div>
 </div>
 <div id="status"></div>
-<p>
-    @using (Ajax.BeginForm("Upload", "Pictures", new { contestId = Model.ContestId }, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
-    {
-        @Html.AntiForgeryToken()
 
-        <input type="file" name="files" style="visibility:hidden; display: none;" id="fu1" multiple />
-        <div class="input-append">
-            <a class="btn btn-primary" onclick="$('#fu1').click();">Participate with your Pictures</a>
+@if (this.User.Identity.IsAuthenticated)
+{
+
+    <p>
+        @using (Ajax.BeginForm("Upload", "Pictures", new { contestId = Model.ContestId }, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <input type="file" name="files" style="visibility:hidden; display: none;" id="fu1" multiple />
+            <div class="input-append">
+                <a class="btn btn-primary" onclick="$('#fu1').click();">Participate with your Pictures</a>
+            </div>
+            <ul class="list-group" id="files-list"></ul>
+        }
+
+        <div class="progress">
+            <div class="progress-bar">0%</div>
         </div>
-        <ul class="list-group" id="files-list"></ul>
-    }
 
-    <div class="progress">
-        <div class="progress-bar">0%</div>
-    </div>
-
-    @Html.ActionLink("Go to my contests", "Index", null, new { @class = "btn btn-info" })
-</p>
+        @Html.ActionLink("Go to my contests", "Index", null, new { @class = "btn btn-info" })
+    </p>
+}
 
 @section Scripts{
     <script src="http://malsup.github.com/jquery.form.js"></script>

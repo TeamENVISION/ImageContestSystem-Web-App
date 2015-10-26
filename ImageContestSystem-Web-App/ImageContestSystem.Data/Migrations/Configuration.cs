@@ -6,6 +6,9 @@ namespace ImageContestSystem.Data.Migrations
 
     using ImageContestSystem.Models;
 
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     internal sealed class Configuration : DbMigrationsConfiguration<ImageContestSystemContext>
     {
         public Configuration()
@@ -48,7 +51,35 @@ namespace ImageContestSystem.Data.Migrations
             context.Contests.Add(contest);
             context.Contests.Add(contest2);
 
+            if (!context.Roles.Any(r => r.Name == "administrator"))
+            {
+                CreateAdminRole(context);
+            }
+
+            if (!context.Users.Any(u => u.UserName == "admin"))
+            {
+                var store = new UserStore<User>();
+                var userManager = new UserManager<User>(store);
+                var admin = new User
+                {
+                    UserName = "admin",
+                    Email = "admin@admin.com"
+                };
+
+                userManager.Create(admin, "adminpass");
+                userManager.AddToRole(admin.Id, "administrator");
+            }
+
             context.SaveChanges();
+        }
+        
+        private static void CreateAdminRole(ImageContestSystemContext context)
+        {
+            var store = new RoleStore<IdentityRole>(context);
+            var roleManager = new RoleManager<IdentityRole>(store);
+            var adminRole = new IdentityRole { Name = "administrator" };
+
+            roleManager.Create(adminRole);
         }
     }
 }
