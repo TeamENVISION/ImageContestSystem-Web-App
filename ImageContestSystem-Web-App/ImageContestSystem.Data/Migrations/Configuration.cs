@@ -51,14 +51,14 @@ namespace ImageContestSystem.Data.Migrations
             context.Contests.Add(contest);
             context.Contests.Add(contest2);
 
-            if (!context.Roles.Any(r => r.Name == "administrator"))
+            if (!context.Roles.Any(r => r.Name == "admin"))
             {
                 CreateAdminRole(context);
             }
 
             if (!context.Users.Any(u => u.UserName == "admin"))
             {
-                var store = new UserStore<User>();
+                var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
                 var admin = new User
                 {
@@ -66,8 +66,9 @@ namespace ImageContestSystem.Data.Migrations
                     Email = "admin@admin.com"
                 };
 
-                userManager.Create(admin, "adminpass");
-                userManager.AddToRole(admin.Id, "administrator");
+                userManager.Create(admin, "@dminPass1");
+
+                userManager.AddToRole(admin.Id, "admin");
             }
 
             context.SaveChanges();
@@ -77,9 +78,8 @@ namespace ImageContestSystem.Data.Migrations
         {
             var store = new RoleStore<IdentityRole>(context);
             var roleManager = new RoleManager<IdentityRole>(store);
-            var adminRole = new IdentityRole { Name = "administrator" };
 
-            roleManager.Create(adminRole);
+            roleManager.Create(new IdentityRole("admin"));
         }
     }
 }

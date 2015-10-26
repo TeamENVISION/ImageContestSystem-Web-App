@@ -17,7 +17,8 @@ namespace ImageContestSystem.Web.Areas.Admin
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { action = "Index", id = UrlParameter.Optional },
+                new[] { "ImageContestSystem.Web.Areas.Admin.Controllers" }
             );
         }
     }
