@@ -1,23 +1,51 @@
-﻿@model System.Linq.IQueryable<ImageContestSystem.Web.Models.ViewModels.PictureViewModel>
-
+﻿@using System.Data.Entity.Core.Common.EntitySql
+@model System.Linq.IQueryable<ImageContestSystem.Web.Models.ViewModels.PictureViewModel>
 @{
     ViewBag.Title = "Vote for picture";
 }
+@foreach (var picture in @Model)
+{
+    <div id="votes">
 
-<!DOCTYPE html>
+        <div>
+            <img src="@picture.Url" height="150px" /><br />
+            Votes: <span id="votes-count-@picture.PictureId"> @picture.VotesCount </span>
+            @using (Ajax.BeginForm("Vote", "Vote", new { pictureId = picture.PictureId }, new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                UpdateTargetId = "votes-count-" + @picture.PictureId,
+                InsertionMode = InsertionMode.Replace,
+                OnSuccess = "onVotePassed()",
+                OnFailure = "onVoteFailed()"
+            }))
+            {
+                if (@picture.hasVoted)
+                {
+                    <input type="submit" value="Unlike" />
+                }
+                else
+                {
+                    <input type="submit" value="Like" />
+                }
 
-<html>
-<head>
-    <title>$title$</title>
-</head>
-<body>
-<div>
-    @{
-        foreach (var @picture in @Model)
-        {
-            <img src="@picture.Url" height="100px"/>
+
+            }
+
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="/Content/chosen.css" rel="stylesheet" type="text/css">
+    <script src="@Url.Content("~/Scripts/chosen.jquery.js")" type="text/javascript"></script>
+    <script>
+        function onVotePassed() {
+            alert("Successfull Voting!");
         }
-    }
-</div>
-</body>
-</html>
+        function onVoteFailed() {
+            alert("Voting failed! You don't have enough available votes!");
+        }
+
+
+    </script>
+}

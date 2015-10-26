@@ -31,9 +31,8 @@
             conf.CreateMap<Contest, VoteViewModel>()
                 .ForMember(c => c.AvailableVotes, sr => sr
                     .MapFrom(m => m.VotesCount - m.Pictures
-                        //.Where(p=> p.ContestId == m.ContestId)
-                    .SelectMany(v => v.Votes)
-                    .Count(vo => vo.VoterId == userId && vo.Picture.ContestId == m.ContestId)));
+                    .SelectMany(pi => pi.Votes)
+                    .Count(p => p.VoterId == userId)));
 
 
             var contests = this.ContestData.Contest.All()
@@ -52,57 +51,64 @@
             var contest = this.ContestData.Contest.Find(id);
             if (contest == null)
             {
-                return HttpNotFound();
+                return HttpNotFound("The contest doesn't exist!");
             }
 
             bool canVote = contest.VotingType == VotingType.Open || contest.Voters.Any(v => v.Id == userId);
 
             if (!canVote)
             {
-                return HttpNotFound();
+                return HttpNotFound("You cannot vote for this contest!");
             }
 
             var conf = Mapper.Configuration;
-            conf.CreateMap<Picture, PictureViewModel>();
+            conf.CreateMap<Picture, PictureViewModel>()
+                .ForMember(p=> p.VotesCount, sr=> sr.MapFrom(m=> m.Votes.Count))
+                .ForMember(p=> p.hasVoted, sr=> sr.MapFrom(m=> m.Votes.Any(v=>v.VoterId==userId)));
 
             var pictures = contest.Pictures.AsQueryable().Project().To<PictureViewModel>();
             return View(pictures);
         }
 
-
-        public ActionResult Vote(int id)
+        [HttpPost]
+        public ActionResult Vote(int pictureId)
         {
             string userId = this.User.Identity.GetUserId();
-            var picture = this.ContestData.Pictures.Find(id);
+            var contest = this.ContestData.Contest.All().FirstOrDefault(c => c.Pictures.Any(p => p.PictureId == pictureId));
 
-            if (picture == null)
+            if (contest == null)
             {
-                return HttpNotFound();
+                return HttpNotFound("This picture doesn't exist!");
             }
 
-            bool canVote = picture.Contest.VotingType == VotingType.Open ||
-                           picture.Contest.Participants.Any(p => p.Id == userId);
+            var picture = contest.Pictures.AsQueryable().First(p=>p.PictureId == pictureId);
+
+            bool canVote = contest.VotingType == VotingType.Open ||
+                           contest.Voters.Any(v => v.Id == userId);
 
             if (!canVote)
             {
-                return HttpNotFound();
+                return HttpNotFound("You cannot vote for this contest!");
             }
 
-            var vote = picture.Votes.FirstOrDefault(p => p.VoterId == userId && p.PictureId == id);
+            var vote = picture.Votes.FirstOrDefault(p => p.VoterId == userId && p.PictureId == pictureId);
 
             if (vote == null)
             {
-                int availableVotes = picture.Contest.VotesCount - picture.Votes.Count(p => p.VoterId == userId);
+                int availableVotes = contest.VotesCount - contest.Pictures
+                    .SelectMany(pi=>pi.Votes).Count(p => p.VoterId == userId);
+
                 if (availableVotes >= 1)
                 {
                     Vote newVote = new Vote();
                     newVote.VoterId = userId;
-                    newVote.PictureId = id;
+                    newVote.PictureId = pictureId;
                     this.ContestData.Votes.Add(newVote);
                 }
+
                 else
                 {
-                    return this.HttpNotFound();
+                    return this.HttpNotFound("You've reached the maximum limit of voting!");
                 }
             }
             else
@@ -110,8 +116,8 @@
                 this.ContestData.Votes.Delete(vote);
             }
             this.ContestData.SaveChanges();
-
-            return this.HttpNotFound();
+            int pictureVoteCount = picture.Votes.Count;
+            return this.Content(pictureVoteCount.ToString());
         }
     }
 

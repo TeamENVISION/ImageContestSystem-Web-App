@@ -1,4 +1,9 @@
-﻿namespace ImageContestSystem.Web.Controllers
+﻿using System.Collections;
+using System.Web.UI.WebControls.WebParts;
+using Glimpse.Core.Extensions;
+using Ninject.Infrastructure.Language;
+
+namespace ImageContestSystem.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -37,7 +42,7 @@
         {
             var contest = Mapper
                 .Map<DetailsContestViewModel>(this.ContestData.Contest.Find(id));
-            
+
             if (contest == null)
             {
                 return this.HttpNotFound();
@@ -54,7 +59,11 @@
         {
             var contest = new Contest();
             var users = this.ContestData.Users.All().ToList();
-            CreateContestInputModel inputModel = new CreateContestInputModel(contest, users);
+
+            IEnumerable<ParticipationType> participationStrategy = Enum.GetValues(typeof(ParticipationType))
+                                                       .Cast<ParticipationType>();
+
+            CreateContestInputModel inputModel = new CreateContestInputModel(contest, users, participationStrategy);
 
             return this.View(inputModel);
         }
@@ -67,6 +76,7 @@
 
             var getParticipants = new List<User>();
             var getVoters = new List<User>();
+
 
             if (model.SelectedParticipants != null)
             {
@@ -85,7 +95,7 @@
                     getVoters.Add(user);
                 }
             }
-          
+
             if (model != null && this.ModelState.IsValid)
             {
                 var contest = new Contest()
@@ -99,16 +109,20 @@
                     HasEnded = false,
                     ContestStatus = ContestStatus.Active,
                     Participants = getParticipants,
-                    Voters = getVoters
+                    Voters = getVoters,
+                    ParticipationType = (ParticipationType)Enum.Parse(typeof(ParticipationType), model.SelectParticipationStrategy.FirstOrDefault())
+
                 };
-              
+
                 this.ContestData.Contest.Add(contest);
                 this.ContestData.SaveChanges();
-                
+
                 return this.RedirectToAction("Index");
             }
 
             return this.View(model);
         }
+
+
     }
 }

@@ -7,10 +7,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Contest</h4>
         <hr />
@@ -40,24 +40,24 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.EndDate, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.VotesCount, htmlAttributes: new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.VotesCount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.VotesCount, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.VotesCount, "", new {@class = "text-danger"})
+                @Html.EditorFor(model => model.VotesCount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.VotesCount, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Users,"Participants", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Users, "Participants", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-             
+
                 @Html.ListBoxFor(m => m.SelectedParticipants,
                 new MultiSelectList(Model.Users, "Id", "UserName"),
                 new
@@ -70,7 +70,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Users,"Voters", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Users, "Voters", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
 
                 @Html.ListBoxFor(m => m.SelectedVoters,
@@ -82,7 +82,19 @@
                      style = "width:280px; height: 30px;"
                  })
             </div>
-        </div>     
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParticipationStrategy, "Participation Strtegy", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownListFor(model => model.SelectParticipationStrategy, new SelectList(Model.ParticipationStrategy),
+                new
+                {
+                    @class = "form-control"
+                })
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
