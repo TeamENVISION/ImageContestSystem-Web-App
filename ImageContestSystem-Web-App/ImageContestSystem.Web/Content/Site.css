@@ -41,6 +41,11 @@ textarea {
     border: none;
 }
 
+.thumb 
+{
+    margin-bottom: 20px;
+}
+
 .caption-custom {
     position: absolute;
     top: 45%;
