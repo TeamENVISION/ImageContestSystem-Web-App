@@ -21,9 +21,19 @@ namespace ImageContestSystem.Web
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
+                       "~/Scripts/jquey-ui-*"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-datetimepicker").Include(
+                    "~/Scripts/moment.js",
+                    "~/Scripts/bootstrap-datetimepicker.js"));
+
+            bundles.Add(new StyleBundle("~/Content/boostrap-datetimepicker").Include(
+                      "~/Content/bootstrap-datetimepicker.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

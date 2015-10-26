@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Data.Entity;
 using System.Web.UI.WebControls.WebParts;
 using Glimpse.Core.Extensions;
 using Ninject.Infrastructure.Language;
@@ -34,7 +35,9 @@ namespace ImageContestSystem.Web.Controllers
         // GET: Contests
         public ActionResult Index()
         {
-            return this.View();
+            var contests = this.ContestData.Contest.All()
+                .Include(c => c.Owner);
+            return View(contests.ToList());
         }
 
         // GET: Contests/{contestId}
@@ -60,10 +63,14 @@ namespace ImageContestSystem.Web.Controllers
             var contest = new Contest();
             var users = this.ContestData.Users.All().ToList();
 
-            IEnumerable<ParticipationType> participationStrategy = Enum.GetValues(typeof(ParticipationType))
+            var participationStrategy = Enum.GetValues(typeof(ParticipationType))
                                                        .Cast<ParticipationType>();
+            var deadlineStrategy = Enum.GetValues(typeof(DeadlineType))
+                                                       .Cast<DeadlineType>();
+            var votingnStrategy = Enum.GetValues(typeof(VotingType))
+                                                       .Cast<VotingType>();
 
-            CreateContestInputModel inputModel = new CreateContestInputModel(contest, users, participationStrategy);
+            CreateContestInputModel inputModel = new CreateContestInputModel(contest, users, participationStrategy, deadlineStrategy, votingnStrategy);
 
             return this.View(inputModel);
         }
@@ -110,8 +117,9 @@ namespace ImageContestSystem.Web.Controllers
                     ContestStatus = ContestStatus.Active,
                     Participants = getParticipants,
                     Voters = getVoters,
-                    ParticipationType = (ParticipationType)Enum.Parse(typeof(ParticipationType), model.SelectParticipationStrategy.FirstOrDefault())
-
+                    ParticipationType = (ParticipationType)Enum.Parse(typeof(ParticipationType), model.SelectParticipationStrategy.FirstOrDefault()),
+                    VotingType = (VotingType)Enum.Parse(typeof(VotingType), model.SelectVotingStrategy.FirstOrDefault()),
+                    DeadlineType = (DeadlineType)Enum.Parse(typeof(DeadlineType), model.SelectDeadlineStrategy.FirstOrDefault())
                 };
 
                 this.ContestData.Contest.Add(contest);
