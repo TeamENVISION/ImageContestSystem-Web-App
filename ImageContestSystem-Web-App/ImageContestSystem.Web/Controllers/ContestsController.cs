@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Data.Entity;
+using System.Net;
 using System.Web.UI.WebControls.WebParts;
 using Glimpse.Core.Extensions;
 using Ninject.Infrastructure.Language;
@@ -131,6 +132,80 @@ namespace ImageContestSystem.Web.Controllers
             return this.View(model);
         }
 
+        [HttpGet]
+        public ActionResult Update(int id)
+        {
+            var contests = new Contest();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var contest = this.ContestData.Contest.Find(id);
+            var a = contest.VotingType;
 
+            if (contest == null)
+            {
+                return HttpNotFound();
+            }
+           
+            var users = this.ContestData.Users.All().ToList();
+            
+            var model = new UpdateContestInputModel(contests, users);
+            model.VoteType = a;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(int id,UpdateContestInputModel model)
+        {
+            var getVoters = new List<User>();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var contest = this.ContestData.Contest.Find(id);
+
+            if (contest == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (model.SelectedVoters != null)
+            {
+                foreach (var voterId in model.SelectedVoters)
+                {
+                    var user = this.ContestData.Users.All().First(u => u.Id == voterId);
+                    getVoters.Add(user);
+                }
+            }
+
+            contest.EndDate = model.EndDate;
+            contest.Description = model.Description;
+            contest.Voters = getVoters;
+
+            this.ContestData.Contest.Update(contest);
+            this.ContestData.SaveChanges();
+
+            return this.RedirectToAction("Index");
+        }
+
+
+        public ActionResult Dismiss(int id)
+        {
+            var contest = this.ContestData.Contest.Find(id);
+
+            contest.HasEnded = true;
+
+            this.ContestData.Contest.Update(contest);
+            this.ContestData.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Finalize(int id)
+        {
+           //TODO
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -230,6 +230,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\InputModels\CreateContestInputModel.cs" />
+    <Compile Include="Models\InputModels\UpdateContestInputModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\DetailsContestViewModel.cs" />
     <Compile Include="Models\ViewModels\PictureDetailsViewModel.cs" />
@@ -406,9 +407,9 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Contests\Create.cshtml" />
-    <Content Include="Views\Contests\Delete.cshtml" />
+    <Content Include="Views\Contests\Dismiss.cshtml" />
     <Content Include="Views\Contests\DetailsById.cshtml" />
-    <Content Include="Views\Contests\Edit.cshtml" />
+    <Content Include="Views\Contests\Update.cshtml" />
     <Content Include="Views\Contests\Index.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Shared\_UploadButton.cshtml" />

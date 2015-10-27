@@ -1,0 +1,97 @@
+﻿@model ImageContestSystem.Web.Models.InputModels.UpdateContestInputModel
+
+@{
+    ViewBag.Title = "Update";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Contest</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.VoteType)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.EndDate, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group" id="voterChoice">
+            @Html.LabelFor(model => model.Users, "Voters", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.ListBoxFor(m => m.SelectedVoters,
+                    new MultiSelectList(Model.Users, "Id", "UserName"),
+                    new
+                    {
+                        @class = "chosen-select",
+                        data_placeholder = "Choose Voters...",
+                        style = "width:280px; height: 30px;"
+                    })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/bootstrap-datetimepicker")
+    @Scripts.Render("~/bundles/jqueryval")
+    <link href="/Content/chosen.css" rel="stylesheet" type="text/css">
+    <script src="@Url.Content("~/Scripts/chosen.jquery.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        var config = {
+            '.chosen-select': {},
+            '.chosen-select-deselect': { allow_single_deselect: true },
+            '.chosen-select-no-single': { disable_search_threshold: 10 },
+            '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+            '.chosen-select-width': { width: "95%" }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+
+        if ($('#VoteType').val() === 'Open') {
+            $('#voterChoice').hide();
+                
+        } else {
+            $('#voterChoice').show();
+        }
+
+        $(function () {
+            $('#EndDate').datetimepicker(
+            {
+                format: 'DD-MMM-YYYY',
+                sideBySide: true,
+                showTodayButton: true,
+                showClose: true,
+                showClear: true,
+                toolbarPlacement: 'bottom'
+            });
+        });
+    </script>
+}

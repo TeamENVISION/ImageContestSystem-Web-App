@@ -42,9 +42,9 @@
                 @Html.DisplayFor(modelItem => item.EndDate)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ContestId }) |
+                @Html.ActionLink("Update", "Update", new { id = item.ContestId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.ContestId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ContestId })
+                @Html.ActionLink("Dismiss", "Dismiss", new { id = item.ContestId })
             </td>
         </tr>
     }
