@@ -8,7 +8,7 @@
             <p>Available Votes: @Model.AvailableVotes | @Model.VotesCount</p>
             <p>Description: <i>@Model.Description</i>
             </p>
-            <p>Owner: @Model.OwnerUsername</p>
+            <p>Author: @Model.OwnerUsername</p>
             <p>Date: @Model.StartDate.ToShortDateString() - @Model.EndDate.ToShortDateString()</p>
             <p align="center">
                 @Html.ActionLink("Vote For This Contest", "Contest", "Vote", new {Id = @Model.ContestId}, new {@class = "btn btn-primary btn-block"})

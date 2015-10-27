@@ -25,7 +25,7 @@
         // GET: Available contests for voting
         public ActionResult Index()
         {
-            string userId = this.User.Identity.GetUserId();
+            string userId = this.UserProfile.Id;
 
             var conf = Mapper.Configuration;
             conf.CreateMap<Contest, VoteViewModel>()
@@ -45,9 +45,14 @@
         }
 
         // GET: All pictures from a single contest that you can vote to
-        public ActionResult Contest(int id)
+        public ActionResult Contest(int? id)
         {
-            string userId = this.User.Identity.GetUserId();
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            string userId = this.UserProfile.Id;
 
             var contest = this.ContestData.Contest.Find(id);
             if (contest == null)
@@ -75,7 +80,7 @@
         [HttpPost]
         public ActionResult Vote(int pictureId)
         {
-            string userId = this.User.Identity.GetUserId();
+            string userId = this.UserProfile.Id;
             var contest = this.ContestData.Contest.All().FirstOrDefault(c => c.Pictures.Any(p => p.PictureId == pictureId));
 
             if (contest == null)
@@ -102,9 +107,11 @@
 
                 if (availableVotes >= 1)
                 {
-                    Vote newVote = new Vote();
-                    newVote.VoterId = userId;
-                    newVote.PictureId = pictureId;
+                    Vote newVote = new Vote
+                    {
+                        VoterId = userId,
+                        PictureId = pictureId
+                    };
                     this.ContestData.Votes.Add(newVote);
                 }
 
