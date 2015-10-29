@@ -21,9 +21,7 @@
                         {
                             HttpMethod = "POST",
                             UpdateTargetId = "votes-count-" + @picture.PictureId,
-                            InsertionMode = InsertionMode.Replace,
-                            OnSuccess = "onVotePassed()",
-                            OnFailure = "onVoteFailed()"
+                            InsertionMode = InsertionMode.Replace
                         }))
                         {
                             if (@picture.HasVoted)
