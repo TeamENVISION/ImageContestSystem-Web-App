@@ -1,4 +1,6 @@
-﻿namespace ImageContestSystem.Web.Controllers
+﻿using ImageContestSystem.Web.Models.InputModels;
+
+namespace ImageContestSystem.Web.Controllers
 {
     using System.Linq;
     using System.Web.Mvc;
@@ -100,6 +102,12 @@
 
             var vote = picture.Votes.FirstOrDefault(p => p.VoterId == userId && p.PictureId == pictureId);
 
+            LikeButtonInputModel buttonResponse = new LikeButtonInputModel
+            {
+                HasVoted = true,
+                VoteCount = picture.Votes.Count
+            };
+
             if (vote == null)
             {
                 int availableVotes = contest.VotesCount - contest.Pictures
@@ -113,6 +121,7 @@
                         PictureId = pictureId
                     };
                     this.ContestData.Votes.Add(newVote);
+                    buttonResponse.VoteCount += 1;
                 }
 
                 else
@@ -123,10 +132,11 @@
             else
             {
                 this.ContestData.Votes.Delete(vote);
+                buttonResponse.HasVoted = false;
+                buttonResponse.VoteCount -= 1;
             }
             this.ContestData.SaveChanges();
-            int pictureVoteCount = picture.Votes.Count;
-            return this.Content(pictureVoteCount.ToString());
+            return PartialView("_VoteButton", buttonResponse);
         }
     }
 
