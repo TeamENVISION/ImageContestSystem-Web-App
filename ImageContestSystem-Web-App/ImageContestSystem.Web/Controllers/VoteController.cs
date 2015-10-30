@@ -29,19 +29,26 @@ namespace ImageContestSystem.Web.Controllers
         {
             string userId = this.UserProfile.Id;
 
-            var conf = Mapper.Configuration;
-            conf.CreateMap<Contest, VoteViewModel>()
-                .ForMember(c => c.AvailableVotes, sr => sr
-                    .MapFrom(m => m.VotesCount - m.Pictures
+            var contests = this.ContestData.Contest
+                .All()
+                .Where(c =>
+                    (c.Voters.Any(v => v.Id == userId) || c.VotingType == VotingType.Open) &&
+                    c.HasEnded == false)
+                .Select(x => new VoteViewModel
+                {
+                    ContestId = x.ContestId,
+                    Title = x.Title,
+                    Description = x.Description,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    AvailableVotes = x.VotesCount - x.Pictures
                     .SelectMany(pi => pi.Votes)
-                    .Count(p => p.VoterId == userId)))
-                .ForMember(c => c.PictureUrl, sr=> sr.MapFrom(m=>m.Pictures.FirstOrDefault().Url));
-
-
-            var contests = this.ContestData.Contest.All()
-                .Where(c => (c.Voters.Any(v => v.Id == userId) || c.VotingType == VotingType.Open) && c.HasEnded == false)
-                .Project()
-                .To<VoteViewModel>();
+                    .Count(p => p.VoterId == userId),
+                    VotesCount = x.VotesCount,
+                    HasEnded = x.HasEnded,
+                    OwnerUsername = x.Owner.UserName,
+                    PictureUrl = x.Pictures.FirstOrDefault().Url
+                }).ToList();
 
             return View(contests);
         }
@@ -69,13 +76,15 @@ namespace ImageContestSystem.Web.Controllers
                 return HttpNotFound("You cannot vote for this contest!");
             }
 
-            var conf = Mapper.Configuration;
-            conf.CreateMap<Picture, PictureViewModel>()
-                .ForMember(p=> p.VotesCount, sr=> sr.MapFrom(m=> m.Votes.Count))
-                .ForMember(p=> p.HasVoted, sr=> sr.MapFrom(m=> m.Votes.Any(v=>v.VoterId==userId)))
-                .ForMember(p=>p.UploaderUsername, sr=> sr.MapFrom(m=> m.Uploader.UserName));
+            var pictures = contest.Pictures.Select(p => new PictureViewModel
+            {
+                VotesCount = p.Votes.Count,
+                HasVoted = p.Votes.Any(v=>v.VoterId == userId),
+                UploaderUsername = p.Uploader.UserName,
+                PictureId = p.PictureId,
+                Url = p.Url
+            }).ToList();
 
-            var pictures = contest.Pictures.AsQueryable().Project().To<PictureViewModel>();
             return View(pictures);
         }
 
