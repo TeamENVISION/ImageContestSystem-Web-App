@@ -7,8 +7,8 @@
 
     using ImageContestSystem.Data.UnitOfWork;
     using ImageContestSystem.Models;
-    using ImageContestSystem.Web.Models.ViewModels;
-
+    using ImageContestSystem.Web.Areas.Admin.Models.ViewModels;
+    
     using Microsoft.AspNet.Identity;
 
     public class UsersController : BaseController

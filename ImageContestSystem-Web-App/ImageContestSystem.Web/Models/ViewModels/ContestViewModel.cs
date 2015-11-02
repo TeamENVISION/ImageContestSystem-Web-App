@@ -33,6 +33,7 @@
                 .ForMember(
                 c => c.PicturesUrl,
                 sr => sr.MapFrom(m => m.Pictures.OrderByDescending(d => d.PictureId)
+                    .Where(p => p.IsDeleted == false)
                     .Select(p => p.Url)
                     .Take(10)));
         }

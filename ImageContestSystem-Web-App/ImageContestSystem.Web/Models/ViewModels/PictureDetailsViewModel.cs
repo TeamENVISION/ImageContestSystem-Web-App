@@ -2,6 +2,7 @@
 {
     using AutoMapper;
 
+    using ImageContestSystem.Common.DropBox;
     using ImageContestSystem.Common.Mapping;
     using ImageContestSystem.Models;
 
@@ -19,7 +20,7 @@
         {
             configuration.CreateMap<Picture, PictureDetailsViewModel>()
                 .ForMember(c => c.Author, cd => cd.MapFrom(m => m.Uploader.UserName))
-                .ForMember(c => c.Url, cd => cd.MapFrom(m => m.Url))
+                .ForMember(c => c.Url, cd => cd.MapFrom(m => DropBoxRepository.Download(m.Url)))
                 .ForMember(c => c.VotesCount, cd => cd.MapFrom(m => m.Votes.Count));
         }
     }

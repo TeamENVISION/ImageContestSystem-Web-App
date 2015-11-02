@@ -2,11 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Drawing;
     using System.IO;
+    using System.Linq;
+    using System.Net;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
 
+    using ImageContestSystem.Common.DropBox;
     using ImageContestSystem.Data.UnitOfWork;
     using ImageContestSystem.Models;
     
@@ -43,13 +48,13 @@
                         return new JsonResult { Data = "error" };
                     }
 
-                    var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-                    var path = Path.Combine(this.Server.MapPath("~" + PicturePath), fileName);
-                    file.SaveAs(path);
+                    file.InputStream.Position = 0;
+                    
+                    var path = DropBoxRepository.Upload(file.FileName, this.UserProfile.UserName, file.InputStream);
 
                     contest.Pictures.Add(new Picture
                     {
-                        Url = PicturePath + fileName,
+                        Url = path,
                         Uploader = this.UserProfile
                     });
                     count++;
@@ -61,6 +66,28 @@
             }
 
             return new JsonResult { Data = "error" };
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public ActionResult Delete(int pictureId)
+        {
+            var picture = this.ContestData.Pictures
+                .All()
+                .FirstOrDefault(p => p.PictureId == pictureId);
+            
+            if (picture == null)
+            {
+                return this.HttpNotFound("You try to delete non existing picture.");
+            }
+            
+            picture.IsDeleted = true;
+            picture.IsDeletedFrom = this.UserProfile.Id;
+            this.ContestData.SaveChanges();
+            
+            //return this.RedirectToAction("DetailsById", "Contests", new { contestid = picture.ContestId });
+            this.Response.StatusCode = (int)HttpStatusCode.OK;
+            return this.Json(new { success = true, responseText = "Picture was successfuly deleted!" }, JsonRequestBehavior.AllowGet);
         }
 
         private static bool IsImage(HttpPostedFileBase postedFile)

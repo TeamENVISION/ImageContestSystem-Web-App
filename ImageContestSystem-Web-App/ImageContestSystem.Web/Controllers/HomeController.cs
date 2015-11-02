@@ -36,7 +36,7 @@
                 .OrderByDescending(c => c.EndDate)
                 .Project()
                 .To<ContestViewModel>();
-
+            
             return this.View(contests.ToPagedList(page, DefaultPageSize));
         }
 

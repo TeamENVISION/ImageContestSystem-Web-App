@@ -1,0 +1,66 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<ImageContestSystem.Web.Areas.Admin.Models.ViewModels.UserViewModel>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Users</h2>
+
+    <p>
+        Find by name: <input id="username" name="username" type="text" value="" />
+        <input type="button" value="Search" id="btnSearch" />
+    </p>
+
+<div id="userlist">
+    @Html.Partial("UserList", Model)
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        function ChangeUrl(page, url) {
+            if (typeof (history.pushState) != "undefined") {
+                var obj = { Page: page, Url: url };
+                history.pushState(obj, obj.Page, obj.Url);
+            } else {
+                alert("Browser does not support HTML5.");
+            }
+        }
+
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+
+        function search() {
+            $.ajax({
+                url: "Users/Index?username=" + $('#username').val(),
+                success: function (result) {
+                    ChangeUrl("Index", "Index?username=" + $('#username').val());
+                    $('#userlist').html(result);
+                }
+            });
+        }
+
+        $(function () {
+            $("#btnSearch").click(function () {
+                search();
+            });
+
+            $("#username").keyup(function (e) {
+                    search();
+            });
+        });
+
+    </script>
+}

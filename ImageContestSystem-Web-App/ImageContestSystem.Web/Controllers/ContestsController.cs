@@ -13,6 +13,7 @@ namespace ImageContestSystem.Web.Controllers
 
     using AutoMapper;
 
+    using ImageContestSystem.Common.DropBox;
     using ImageContestSystem.Data.UnitOfWork;
     using ImageContestSystem.Models;
     using ImageContestSystem.Web.Models.InputModels;
@@ -50,7 +51,7 @@ namespace ImageContestSystem.Web.Controllers
             {
                 return this.HttpNotFound();
             }
-
+            
             var daysLeft = contest.EndDate - DateTime.Now;
             contest.DaysLeft = daysLeft.Days;
 
@@ -123,6 +124,7 @@ namespace ImageContestSystem.Web.Controllers
                 };
 
                 this.ContestData.Contest.Add(contest);
+                contest.Pictures.Add(new Picture { Url = "default.jpg", UploaderId = ownerId });
                 this.ContestData.SaveChanges();
 
                 return this.RedirectToAction("Index");

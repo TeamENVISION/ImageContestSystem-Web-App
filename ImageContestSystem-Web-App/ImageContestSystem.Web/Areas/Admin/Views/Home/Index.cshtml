@@ -1,5 +1,58 @@
-﻿
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<ImageContestSystem.Web.Models.ViewModels.ContestViewModel>
+
 @{
     ViewBag.Title = "Admin Home page";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="row">
+    @foreach (var contest in Model)
+    {
+        <div class="row">
+            @Html.DisplayFor(m => contest)
+            <button class="confirm btn btn-danger" id="@contest.ContestId" type="button">Delete the contest</button>
+            </div>
+    }
+</div>
+
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryconf")
+
+    <script>
+        $.each($('.col-xs-12'), function(i) {
+            $("#myCarousel").attr('id', 'myCarousel' + i);
+            $('#myCarousel' + i + ' .carousel-control').attr('href', '#myCarousel' + i);
+            $('#myCarousel' + i + ' .carousel-inner div:first').addClass('active');
+        });
+
+        $(".confirm").confirm({
+            text: "Are you sure you want to delete that contest?",
+            title: "Confirmation required",
+            confirm: function(button) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Contests/Delete",
+                    data: '{pictureId:' + button[0].id + '}',
+                    contentType: "application/json; charset=utf-8"
+                });
+            },
+            cancel: function(button) {
+                // nothing to do
+            },
+            confirmButton: "Yes",
+            cancelButton: "No",
+            post: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-default",
+            dialogClass: "modal-dialog modal-lg" // Bootstrap classes for large modal
+        });
+    </script>
 }

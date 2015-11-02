@@ -13,12 +13,11 @@
     @Html.DisplayFor(contest => contest)
 </div>
 
-
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
 @section Scripts{
-    <script src="http://malsup.github.com/jquery.form.js"></script>
+    @*<script src="http://malsup.github.com/jquery.form.js"></script>
 
     <script>
         $('#fu1').change(function() {
@@ -75,7 +74,7 @@
                 }
             });
         })();
-    </script>
+    </script>*@
 
     <script>
         $.each($('.col-xs-12'), function(i) {

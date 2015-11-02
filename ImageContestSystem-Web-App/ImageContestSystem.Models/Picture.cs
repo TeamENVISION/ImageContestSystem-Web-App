@@ -21,6 +21,10 @@ namespace ImageContestSystem.Models
 
         public virtual User Uploader { get; set; }
 
+        public bool IsDeleted { get; set; }
+
+        public string IsDeletedFrom { get; set; }
+
         [Required]
         public int ContestId { get; set; }
 

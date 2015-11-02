@@ -52,8 +52,10 @@
                        m.MapRightKey("VoterId");
                        m.ToTable("ContestVoters");
                    });
-            
-            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            modelBuilder.Conventions
+                .Remove<OneToManyCascadeDeleteConvention>();
+
             base.OnModelCreating(modelBuilder);
         }
     }

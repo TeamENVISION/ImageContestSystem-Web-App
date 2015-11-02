@@ -12,6 +12,9 @@ namespace ImageContestSystem.Web
                         "~/Scripts/jquery-{version}.js")
                         .Include("~/Scripts/chosen.jquery.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryconf").Include(
+                        "~/Scripts/jquery.confirm.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));

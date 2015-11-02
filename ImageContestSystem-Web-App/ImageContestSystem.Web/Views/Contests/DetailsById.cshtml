@@ -8,14 +8,17 @@
 
     if (this.User.IsInRole("admin") || this.User.Identity.GetUserId() == @Model.OwnerId)
     {
-        Html.ActionLink("Edit", "Edit", new { id = Model.ContestId }, new {@class = "btn btn-primary"});
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ContestId }, new { @class = "btn btn-primary" });
     }
 }
 
 <div class="row text-center">
     <div class="row" id="box-search">
         <div class="thumbnail-custom text-center">
-            <img src="@Model.Pictures.OrderByDescending(p => p.VotesCount).FirstOrDefault().Url" alt="Most liked pictures" class="img-responsive">
+            @if (@Model.Pictures.Any())
+            {
+                <img src="@Model.Pictures.OrderByDescending(p => p.VotesCount).FirstOrDefault().Url" alt="Most liked pictures" class="img-responsive">
+            }
             <div class="caption-custom">
                 <h3>@Model.Title</h3>
                 <p>@Model.Description</p>
@@ -38,7 +41,6 @@
         </p>
     </div>
 </div>
-<div id="status-custom"></div>
 
 @if (this.User.Identity.IsAuthenticated)
 {
@@ -109,7 +111,7 @@
                     $('#fu1').val('');
                     setTimeout(function() { progress.hide().fadeOut(500); }, 1000);
                 },
-                complete: function (xhr) {
+                complete: function(xhr) {
                     console.log(xhr.responseText);
                     if (xhr.responseText == '"error"') {
                         status.html($('<div/>').html('Fail upload was unsuccessfull.').addClass('alert alert-danger'));
@@ -123,11 +125,32 @@
         })();
     </script>
 
+    @Scripts.Render("~/bundles/jqueryconf")
+
     <script>
-        $.each($('.col-xs-12'), function(i) {
-            $("#myCarousel").attr('id', 'myCarousel' + i);
-            $('#myCarousel' + i + ' .carousel-inner .carousel-control').attr('href', '#myCarousel' + i);
-            $('#myCarousel' + i + ' .carousel-inner div:first').addClass('active');
+        $(".confirm").confirm({
+            text: "Are you sure you want to delete that picture?",
+            title: "Confirmation required",
+            confirm: function(button) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Pictures/Delete",
+                    data: '{pictureId:' + button[0].id + '}',
+                    contentType: "application/json; charset=utf-8",
+                    success: function() {
+                        $(".picture-" + button[0].id).remove();
+                    }
+                });
+            },
+            cancel: function(button) {
+                // nothing to do
+            },
+            confirmButton: "Yes",
+            cancelButton: "No",
+            post: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonClass: "btn-default",
+            dialogClass: "modal-dialog modal-lg" // Bootstrap classes for large modal
         });
     </script>
 }

@@ -2,11 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using AutoMapper;
 
+    using ImageContestSystem.Common.DropBox;
     using ImageContestSystem.Common.Mapping;
     using ImageContestSystem.Models;
+
+    using WebGrease.Css.Extensions;
 
     public class DetailsContestViewModel : IMapFrom<Contest>, IHaveCustomMappings
     {
@@ -50,7 +54,11 @@
         {
             configuration.CreateMap<Contest, DetailsContestViewModel>()
                 .ForMember(c => c.ParticipantsCount, cd => cd.MapFrom(m => m.Participants.Count))
-                .ForMember(c => c.VotesCount, cd => cd.MapFrom(m => m.VotesCount));
+                .ForMember(c => c.VotesCount, cd => cd.MapFrom(m => m.VotesCount))
+                .ForMember(
+                c => c.Pictures, 
+                cd => cd.MapFrom(m => m.Pictures
+                    .Where(p => p.IsDeleted == false)));
         }
     }
 }

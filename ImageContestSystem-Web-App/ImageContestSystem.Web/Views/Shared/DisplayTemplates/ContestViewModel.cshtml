@@ -1,4 +1,5 @@
-﻿@model ImageContestSystem.Web.Models.ViewModels.ContestViewModel
+﻿@using ImageContestSystem.Common.DropBox
+@model ImageContestSystem.Web.Models.ViewModels.ContestViewModel
 
 <div class="col-md-6 col-sm-6 col-xs-12">
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -8,7 +9,7 @@
             {
                 <div class="item">
                     <a href="/Contest/@Model.ContestId">
-                        <img src="@picture" alt="@picture"/>
+                        <img src="@DropBoxRepository.Download(picture)" alt="@picture"/>
                         <div class="carousel-caption">
                             <h3>@Model.Title</h3>
                             <p>@Model.Description</p>
