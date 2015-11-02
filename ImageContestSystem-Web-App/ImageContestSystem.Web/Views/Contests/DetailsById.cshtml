@@ -67,7 +67,8 @@
 
 @section Scripts{
     <script src="http://malsup.github.com/jquery.form.js"></script>
-
+    @Scripts.Render("~/bundles/noty")
+    
     <script>
         $('#fu1').change(function() {
             var file = $('<li class="list-group-item" id="subfile"></li>').html($(this).val());
@@ -112,11 +113,22 @@
                     setTimeout(function() { progress.hide().fadeOut(500); }, 1000);
                 },
                 complete: function(xhr) {
-                    console.log(xhr.responseText);
-                    if (xhr.responseText == '"error"') {
-                        status.html($('<div/>').html('Fail upload was unsuccessfull.').addClass('alert alert-danger'));
+                    if (xhr.status == 400) {
+                        var n = noty({
+                            text: xhr.responseJSON["responseText"],
+                            type: 'error',
+                            dismissQueue: true,
+                            layout: 'center',
+                            theme: 'bootstrapTheme'
+                        });
                     } else {
-                        status.html($('<div/>').html(xhr.responseText).addClass('alert alert-info'));
+                        var n = noty({
+                            text: xhr.responseJSON["responseText"],
+                            type: 'success',
+                            dismissQueue: true,
+                            layout: 'center',
+                            theme: 'bootstrapTheme'
+                        });
                     }
                     $('#files-list').html('');
                     setTimeout(function() { status.empty(); }, 1500);

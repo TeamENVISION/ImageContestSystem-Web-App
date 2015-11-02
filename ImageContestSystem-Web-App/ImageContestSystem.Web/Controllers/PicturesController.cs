@@ -2,8 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -18,7 +16,6 @@
     [Authorize]
     public class PicturesController : BaseController
     {
-        private const string PicturePath = "/Content/PictureFiles/";
         private const int ImageMinimumBytes = 512;
 
         public PicturesController(IImageContestSystemData data)
@@ -45,7 +42,9 @@
                 {
                     if (file == null || file.ContentLength == 0 || !IsImage(file))
                     {
-                        return new JsonResult { Data = "error" };
+
+                        this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return this.Json(new { responseText = "Picture upload failed!" }, JsonRequestBehavior.AllowGet);
                     }
 
                     file.InputStream.Position = 0;
@@ -62,10 +61,12 @@
 
                 this.ContestData.SaveChanges();
 
-                return new JsonResult { Data = "Successfully " + count + " file(s) uploaded" };
+                this.Response.StatusCode = (int)HttpStatusCode.OK;
+                return this.Json(new { responseText = "Picture was successfuly uploaded!" }, JsonRequestBehavior.AllowGet);
             }
 
-            return new JsonResult { Data = "error" };
+            this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return this.Json(new { responseText = "Picture upload failed!" }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
