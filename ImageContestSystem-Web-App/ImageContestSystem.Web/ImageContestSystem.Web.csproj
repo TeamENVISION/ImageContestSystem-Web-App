@@ -435,7 +435,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Contests\Create.cshtml" />
-    <Content Include="Views\Contests\Dismiss.cshtml" />
+    <Content Include="Views\Contests\Finalize.cshtml" />
     <Content Include="Views\Contests\DetailsById.cshtml" />
     <Content Include="Views\Contests\Update.cshtml" />
     <Content Include="Views\Contests\Index.cshtml" />

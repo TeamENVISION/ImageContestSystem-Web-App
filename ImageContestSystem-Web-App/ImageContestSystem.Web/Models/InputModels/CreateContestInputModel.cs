@@ -24,11 +24,14 @@ namespace ImageContestSystem.Web.Models.InputModels
         public DateTime StartDate { get; set; }
 
         //still not working
-        //[DateGreaterThan("EndDate", "StartDate", CompareType.GreaterThan)]
+        [DateGreaterThan("EndDate", "StartDate", CompareType.GreaterThan)]
         public DateTime EndDate { get; set; }
 
         [Range(1, 20, ErrorMessage = "{0} must be in range between {1} and {2}")]
         public int VotesCount { get; set; }
+
+        [Range(1, 30, ErrorMessage = "{0} must be in range between {1} and {2}")]
+        public int WinnersCount { get; set; }
         public Contest Contests { get; set; }
         public List<string> SelectedParticipants { get; set; }
         public List<User> Users { get; set; }
