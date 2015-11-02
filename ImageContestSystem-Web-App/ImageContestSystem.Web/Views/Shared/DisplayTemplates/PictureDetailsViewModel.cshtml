@@ -9,6 +9,7 @@
                     <li>@Model.VotesCount likes</li>
                     <li>Author: @Model.Author</li>
                 </ul>
+                </div>
             </div>
         </div>
         @if (this.User.IsInRole("admin"))
@@ -16,5 +17,4 @@
             <button class="confirm btn btn-danger" id="@Model.PictureId" type="button">Delete the picture</button>
         }
     </div>
-    
 </div>

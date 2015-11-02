@@ -1,4 +1,4 @@
-﻿@model System.Linq.IQueryable<ImageContestSystem.Web.Models.ViewModels.PictureViewModel>
+﻿@model List<ImageContestSystem.Web.Models.ViewModels.PictureViewModel>
 @{
     ViewBag.Title = "Vote for picture";
 }
@@ -17,23 +17,20 @@
                 <div class="thumbnail thumb" id="votes">
                     <img src="@picture.Url" />
                     <div class="caption">
-                        Likes: <span id="votes-count-@picture.PictureId"> @picture.VotesCount </span> <span class="pull-right">Uploader: @picture.UploaderUsername</span>
                         @using (Ajax.BeginForm("Vote", "Vote", new { pictureId = picture.PictureId }, new AjaxOptions
                         {
                             HttpMethod = "POST",
                             UpdateTargetId = "votes-count-" + @picture.PictureId,
-                            InsertionMode = InsertionMode.Replace,
-                            OnSuccess = "onVotePassed()",
-                            OnFailure = "onVoteFailed()"
+                            InsertionMode = InsertionMode.Replace
                         }))
                         {
                             if (@picture.HasVoted)
                             {
-                                <input type="submit" class="btn btn-primary like-button" value="Unlike" />
+                                <div id="votes-count-@picture.PictureId" class="text-right">Likes: @picture.VotesCount <input type="submit" class="btn btn-primary like-button" value="Unlike"/></div>
                             }
                             else
                             {
-                                <input type="submit" class="btn btn-primary like-button" value="Like" />
+                                <div id="votes-count-@picture.PictureId" class="text-right">Likes: @picture.VotesCount <input type="submit" class="btn btn-primary like-button" value="Like" /></div>
                             }
                         }
                     </div>
@@ -41,45 +38,6 @@
                 </div>
             </div>
         }
-        @section Scripts {
-
-            <script>
-                
-                $(function () {
-                    $('.like-button').click(function() {
-                        var button = $(this);
-
-                        if (button.attr("value") !== 'Like') {
-                            button.val('Like');
-                        } else {
-                            button.val('Unlike');
-                        }
-                    });
-                });
-
-                function onVotePassed()
-                {
-                    //$('.like-button').click(function () 
-                    //{
-                    //    var button = $(this);
-
-                    //    if (button.attr("value") !== 'Like')
-                    //    {
-                    //        button.val('Like');
-                    //    }
-                    //    else
-                    //    {
-                    //        button.val('Unlike');
-                    //    }
-                    //});
-                };
-
-                function onVoteFailed()
-                {
-                    alert("You don't have enough available votes");
-                }
-
-            </script>
-        }
+        
     </div>
 </div>

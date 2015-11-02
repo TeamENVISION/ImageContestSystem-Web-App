@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="partChoice">
             @Html.LabelFor(model => model.Users, "Participants", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
 
@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="voterChoice">
             @Html.LabelFor(model => model.Users, "Voters", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
 
@@ -149,6 +149,28 @@
         for (var selector in config) {
             $(selector).chosen(config[selector]);
         }
+        $('#partChoice').hide();
+        
+        $('#SelectParticipationStrategy').change(function () {
+            if ($(this).val() == 'Open') {
+                $('#partChoice').hide();
+            }
+            else {
+               
+                $('#partChoice').show();
+            }
+
+        });
+        $('#voterChoice').hide();
+        $('#SelectVotingStrategy').change(function () {
+            if ($(this).val() == 'Open') {
+                $('#voterChoice').hide();
+            }
+            else {
+                $('#voterChoice').show();
+            }
+
+        });
 
         $(function () {
             $('#StartDate').datetimepicker({
@@ -174,8 +196,6 @@
             });
             return false;
         });
-
-
     </script>
 }
 

@@ -1,0 +1,12 @@
+﻿@model ImageContestSystem.Web.Models.InputModels.LikeButtonInputModel
+
+
+Likes: @Model.VoteCount
+@if(@Model.HasVoted)
+{
+   <input type="submit" class="btn btn-primary like-button" value="Unlike" />
+}
+else
+{
+    <input type="submit" class="btn btn-primary like-button" value="Like" />
+}
