@@ -1,9 +1,10 @@
-﻿@model ImageContestSystem.Web.Models.ViewModels.PictureDetailsViewModel
+﻿@using ImageContestSystem.Common.DropBox
+@model ImageContestSystem.Web.Models.ViewModels.PictureDetailsViewModel
 
 <div class="col-md-4 picture-@Model.PictureId">
     <div class="row" id="box-search">
         <div class="thumbnail text-center">
-            <img src="@Model.Url" alt="@Model.Author picture" class="img-responsive">
+            <img src="@DropBoxRepository.Download(@Model.Url)" alt="@Model.Author picture" class="img-responsive">
             <div class="caption" style="vertical-align: bottom;">
                 <ul class="list-inline circle-list" style="color: #ffffff">
                     <li>@Model.VotesCount likes</li>

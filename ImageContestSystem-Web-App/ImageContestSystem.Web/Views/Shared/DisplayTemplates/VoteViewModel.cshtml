@@ -1,9 +1,10 @@
-﻿@model ImageContestSystem.Web.Models.ViewModels.VoteViewModel
+﻿@using ImageContestSystem.Common.DropBox
+@model ImageContestSystem.Web.Models.ViewModels.VoteViewModel
 
 <div class="col-xs-3">
     <div class="thumbnail thumb">
         <h2 class="text-center">@Model.Title</h2>
-        <img src="@Model.PictureUrl" alt=""/>
+        <img src="@DropBoxRepository.Download(@Model.PictureUrl)" alt=""/>
         <div class="caption">
             <p>Available Votes: @Model.AvailableVotes | @Model.VotesCount</p>
             <p>Description: <i>@Model.Description</i>

@@ -1,4 +1,5 @@
-﻿@model List<ImageContestSystem.Web.Models.ViewModels.PictureViewModel>
+﻿@using ImageContestSystem.Common.DropBox
+@model List<ImageContestSystem.Web.Models.ViewModels.PictureViewModel>
 @{
     ViewBag.Title = "Vote for picture";
 }
@@ -15,7 +16,7 @@
 
             <div class="col-xs-6">
                 <div class="thumbnail thumb" id="votes">
-                    <img src="@picture.Url" />
+                    <img src="@DropBoxRepository.Download(@picture.Url)" />
                     <div class="caption">
                         @using (Ajax.BeginForm("Vote", "Vote", new { pictureId = picture.PictureId }, new AjaxOptions
                         {
