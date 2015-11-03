@@ -221,6 +221,7 @@
     <Compile Include="Controllers\ContestsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\PicturesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VoteController.cs" />
@@ -448,6 +449,7 @@
     <Content Include="Views\Shared\DisplayTemplates\PrizeViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\PictureDetailsViewModel.cshtml" />
     <Content Include="Views\Shared\_VoteButton.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -29,5 +29,10 @@
         
         [Required]
         public bool IsRead { get; set; }
+        [Required]
+        public InvitationType InviteType { get; set; }
+
+        [Required]
+        public int ContestId { get; set; }
     }
 }

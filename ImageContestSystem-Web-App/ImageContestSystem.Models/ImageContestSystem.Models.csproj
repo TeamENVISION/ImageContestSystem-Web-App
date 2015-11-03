@@ -62,9 +62,8 @@
   <ItemGroup>
     <Compile Include="Contest.cs" />
     <Compile Include="ContestStatus.cs" />
-    <Compile Include="ContestStrategy.cs" />
     <Compile Include="DeadlineType.cs" />
-    <Compile Include="Invitation.cs" />
+    <Compile Include="InvitationType.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="ParticipationType.cs" />
     <Compile Include="Picture.cs" />

@@ -14,8 +14,6 @@
 
         public IDbSet<Contest> Contests { get; set; }
 
-        public IDbSet<ContestStrategy> ContestStrategies { get; set; }
-
         public IDbSet<Picture> Pictures { get; set; }
 
         public IDbSet<Vote> Votes { get; set; }

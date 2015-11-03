@@ -10,6 +10,7 @@ namespace ImageContestSystem.Web.Models.InputModels
     public class UpdateContestInputModel
     {
         public string Id { get; set; }
+
         [StringLength(1000, ErrorMessage = "{0} must be between {2} and {1} characters long",
            MinimumLength = 10)]
         public string Description { get; set; }

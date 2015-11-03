@@ -45,7 +45,6 @@ namespace ImageContestSystem.Web.Models.InputModels
 
         public IEnumerable<VotingType> VotingStrategy { get; set; }
         public List<string> SelectVotingStrategy { get; set; }
-
         public CreateContestInputModel()
         {
 

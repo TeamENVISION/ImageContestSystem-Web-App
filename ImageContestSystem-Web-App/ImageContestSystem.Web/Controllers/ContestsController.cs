@@ -109,9 +109,7 @@ namespace ImageContestSystem.Web.Controllers
                     WinnersCount = model.WinnersCount,
                     OwnerId = ownerId,
                     HasEnded = false,
-                    ContestStatus = ContestStatus.Active,
-                    Participants = GetParticipants(model,getParticipants),
-                    Voters = GetVoters(model,getVoters),
+                    ContestStatus = ContestStatus.Active,                 
                     ParticipationType = (ParticipationType)Enum.Parse(typeof(ParticipationType), model.SelectParticipationStrategy.FirstOrDefault()),
                     VotingType = (VotingType)Enum.Parse(typeof(VotingType), model.SelectVotingStrategy.FirstOrDefault()),
                     DeadlineType = (DeadlineType)Enum.Parse(typeof(DeadlineType), model.SelectDeadlineStrategy.FirstOrDefault())
@@ -119,6 +117,10 @@ namespace ImageContestSystem.Web.Controllers
                
                 this.ContestData.Contest.Add(contest);
                 contest.Pictures.Add(new Picture { Url = "default.jpg", UploaderId = ownerId });
+                this.ContestData.SaveChanges();
+
+                contest.Participants = GetParticipants(contest.ContestId,model, getParticipants);
+                contest.Voters = GetVoters(contest.ContestId,model, getVoters);
                 this.ContestData.SaveChanges();
 
                 return this.RedirectToAction("Index");
@@ -221,7 +223,6 @@ namespace ImageContestSystem.Web.Controllers
                     .Select(p => p.Uploader.UserName).Single();
                 getWinners.Add(uploaderUsername);
             }
-
             contest.HasEnded = true;
 
             var winners = getWinners.Distinct().Take(contest.WinnersCount);
@@ -229,30 +230,69 @@ namespace ImageContestSystem.Web.Controllers
             return View(winners.ToList());
         }
 
-        public List<User> GetParticipants(CreateContestInputModel model, List<User> participants )
+        public List<User> GetParticipants(int contestId,CreateContestInputModel model, List<User> participants )
         {
+            var ownerId = this.User.Identity.GetUserId();
+            var userName = this.Profile.UserName;
+            var contestName = model.Title;
+                
             if (model.SelectedParticipants != null)
             {
                 foreach (var id in model.SelectedParticipants)
                 {
                     var user = this.ContestData.Users.All()
                         .First(u => u.Id == id);
+
+                    var participantNotification = new Notification()
+                    {
+                        RecipientId = id,
+                        SenderId = ownerId,
+                        Content =
+                            string.Format("{0} has invited you to be a participant in {1} contest", userName,
+                                contestName),
+                        CreatedOn = DateTime.Now,
+                        IsRead = false,
+                        InviteType = InvitationType.Participant,
+                        ContestId = contestId
+                    };
+                    this.ContestData.Notifications.Add(participantNotification);
+                    
                     participants.Add(user);
                 }
             }
+            this.ContestData.SaveChanges();
+
             return participants;
         }
 
-        public List<User> GetVoters(CreateContestInputModel model, List<User> voters)
+        public List<User> GetVoters(int contestId, CreateContestInputModel model, List<User> voters)
         {
+            var ownerId = this.User.Identity.GetUserId();
+            var userName = this.Profile.UserName;
+            var contestName = model.Title;
+
             if (model.SelectedVoters != null)
             {
                 foreach (var id in model.SelectedVoters)
                 {
                     var user = this.ContestData.Users.All().First(u => u.Id == id);
+                    var voterNotification = new Notification()
+                    {
+                        RecipientId = id,
+                        SenderId = ownerId,
+                        Content =
+                            string.Format("{0} has invited you to be a voter in {1} contest", userName,
+                                contestName),
+                        CreatedOn = DateTime.Now,
+                        IsRead = false,
+                        InviteType = InvitationType.Voter,
+                        ContestId = contestId
+                    };
+                    this.ContestData.Notifications.Add(voterNotification);
                     voters.Add(user);
                 }
             }
+            this.ContestData.SaveChanges();
             return voters;
         } 
     }
