@@ -1,0 +1,15 @@
+﻿@using ImageContestSystem.Models
+@model ImageContestSystem.Web.Models.ViewModels.NotificationViewModel
+<tr>
+    <td class="text-center">@Model.CreatedOn</td>
+    <td class="text-center">@Model.Sender</td>
+    <td>@Model.Content </td>
+    @if (@Model.InviteType == @InvitationType.Custom)
+    {
+        <td><p class="btn btn-block btn-danger">Already Replied</p></td>
+    }
+    else
+    {
+        <td><a class="btn btn-block btn-success" href="Notifications/Reply/@Model.NotificationId">Reply</a></td>
+    }
+</tr>
