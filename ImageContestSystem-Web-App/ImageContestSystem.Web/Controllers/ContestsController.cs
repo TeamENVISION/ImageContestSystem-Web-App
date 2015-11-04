@@ -233,7 +233,7 @@ namespace ImageContestSystem.Web.Controllers
         public List<User> GetParticipants(int contestId,CreateContestInputModel model, List<User> participants )
         {
             var ownerId = this.User.Identity.GetUserId();
-            var userName = this.Profile.UserName;
+            var userName = this.User.Identity.GetUserName();
             var contestName = model.Title;
                 
             if (model.SelectedParticipants != null)
@@ -268,7 +268,7 @@ namespace ImageContestSystem.Web.Controllers
         public List<User> GetVoters(int contestId, CreateContestInputModel model, List<User> voters)
         {
             var ownerId = this.User.Identity.GetUserId();
-            var userName = this.Profile.UserName;
+            var userName = this.User.Identity.GetUserName();
             var contestName = model.Title;
 
             if (model.SelectedVoters != null)

@@ -1,0 +1,42 @@
+﻿@using ImageContestSystem.Models
+@model ImageContestSystem.Web.Models.ViewModels.NotificationViewModel
+@{
+    ViewBag.Title = "Reply";
+}
+
+<div class="text-center well">
+    <h3>@Model.Content</h3>
+    <div class="row">
+        @if (Model.InviteType != InvitationType.Custom)
+        {
+            using (Ajax.BeginForm("UserResponse", "Notifications", new { notificationId = Model.NotificationId, accepted = false }, new AjaxOptions
+            {
+                HttpMethod = "POST",
+                UpdateTargetId = "reply"
+            }, new { @class = "col-lg-1 col-md-offset-5" }))
+            {
+                <input type="submit" class="btn btn-primary reply btn-danger" value="Decline" />
+            }
+
+            using (Ajax.BeginForm("UserResponse", "Notifications", new { notificationId = Model.NotificationId, accepted = true }, new AjaxOptions
+            {
+                HttpMethod = "POST",
+                UpdateTargetId = "reply"
+            }, new { @class = "col-lg-1" }))
+            {
+                <input type="submit" class="btn btn-primary reply btn-success" value="Accept" />
+            }
+
+        }
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('.reply').click(function () {
+                $(location).attr('href', '/Notifications');
+            });
+        });
+    </script>
+}

@@ -1,4 +1,5 @@
-﻿using ImageContestSystem.Web.Models.InputModels;
+﻿using System.Web;
+using ImageContestSystem.Web.Models.InputModels;
 
 namespace ImageContestSystem.Web.Controllers
 {
@@ -66,14 +67,14 @@ namespace ImageContestSystem.Web.Controllers
             var contest = this.ContestData.Contest.Find(id);
             if (contest == null)
             {
-                return HttpNotFound("The contest doesn't exist!");
+                return RedirectToAction("Index");
             }
 
             bool canVote = contest.VotingType == VotingType.Open || contest.Voters.Any(v => v.Id == userId);
 
             if (!canVote)
             {
-                return HttpNotFound("You cannot vote for this contest!");
+                return RedirectToAction("Index");
             }
 
             var pictures = contest.Pictures.Select(p => new PictureViewModel
@@ -96,7 +97,7 @@ namespace ImageContestSystem.Web.Controllers
 
             if (contest == null)
             {
-                return HttpNotFound("This picture doesn't exist!");
+                return RedirectToAction("Index");
             }
 
             var picture = contest.Pictures.AsQueryable().First(p=>p.PictureId == pictureId);
@@ -106,7 +107,7 @@ namespace ImageContestSystem.Web.Controllers
 
             if (!canVote)
             {
-                return HttpNotFound("You cannot vote for this contest!");
+                return RedirectToAction("Index");
             }
 
             var vote = picture.Votes.FirstOrDefault(p => p.VoterId == userId && p.PictureId == pictureId);
@@ -132,10 +133,9 @@ namespace ImageContestSystem.Web.Controllers
                     this.ContestData.Votes.Add(newVote);
                     buttonResponse.VoteCount += 1;
                 }
-
                 else
                 {
-                    return this.HttpNotFound("You've reached the maximum limit of voting!");
+                    throw new HttpException(400, "You don't have enough available votes!");
                 }
             }
             else

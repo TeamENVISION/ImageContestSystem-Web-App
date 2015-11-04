@@ -22,12 +22,13 @@
                         {
                             HttpMethod = "POST",
                             UpdateTargetId = "votes-count-" + @picture.PictureId,
-                            InsertionMode = InsertionMode.Replace
+                            InsertionMode = InsertionMode.Replace,
+                            OnFailure = "VoteFailed"
                         }))
                         {
                             if (@picture.HasVoted)
                             {
-                                <div id="votes-count-@picture.PictureId" class="text-right">Likes: @picture.VotesCount <input type="submit" class="btn btn-primary like-button" value="Unlike"/></div>
+                                <div id="votes-count-@picture.PictureId" class="text-right">Likes: @picture.VotesCount <input type="submit" class="btn btn-primary like-button" value="Unlike" /></div>
                             }
                             else
                             {
@@ -39,6 +40,24 @@
                 </div>
             </div>
         }
-        
+
     </div>
 </div>
+@section Scripts
+{
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    @Scripts.Render("~/bundles/noty")
+
+    <script>
+        function VoteFailed() {
+            noty({
+                text: "You don't have enough available votes!",
+                type: 'error',
+                dismissQueue: true,
+                layout: 'center',
+                theme: 'bootstrapTheme'
+            });
+        }
+    </script>
+
+}

@@ -237,6 +237,7 @@
     <Compile Include="Models\InputModels\UpdateContestInputModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\DetailsContestViewModel.cs" />
+    <Compile Include="Models\ViewModels\NotificationViewModel.cs" />
     <Compile Include="Models\ViewModels\PictureDetailsViewModel.cs" />
     <Compile Include="Models\ViewModels\PrizeViewModel.cs" />
     <Compile Include="Models\ViewModels\VoteViewModel.cs" />
@@ -450,6 +451,8 @@
     <Content Include="Views\Shared\DisplayTemplates\PictureDetailsViewModel.cshtml" />
     <Content Include="Views\Shared\_VoteButton.cshtml" />
     <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\Notifications\Reply.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\NotificationViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
