@@ -452,12 +452,12 @@
     <Content Include="Views\Shared\DisplayTemplates\PictureDetailsViewModel.cshtml" />
     <Content Include="Views\Shared\_VoteButton.cshtml" />
     <Content Include="Views\Notifications\Index.cshtml" />
-<<<<<<< Updated upstream
+
     <Content Include="Views\Notifications\Reply.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\NotificationViewModel.cshtml" />
-=======
+
     <Content Include="Views\Shared\_Notifications.cshtml" />
->>>>>>> Stashed changes
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
