@@ -15,23 +15,7 @@
         </tr>
         </thead>
         <tbody>
-
-            @foreach (var notification in Model)
-            {
-                <tr>
-                    <td class="text-center">@notification.CreatedOn</td>
-                    <td class="text-center">@notification.Sender</td>
-                    <td>@notification.Content </td>
-                    @if(@notification.InviteType == @InvitationType.Custom)
-                    {
-                        <td><p class="btn btn-block btn-danger">Already Replied</p></td>
-                    }
-                    else
-                    {
-                        <td><a class="btn btn-block btn-success" href="Notifications/Reply/@notification.NotificationId">Reply</a></td>
-                    }
-                </tr>
-            }
+            @Html.DisplayForModel()
         </tbody>
     </table>
 </div>
