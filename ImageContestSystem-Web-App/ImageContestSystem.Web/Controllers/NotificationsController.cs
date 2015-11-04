@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace ImageContestSystem.Web.Controllers
 {
+    [Authorize]
     public class NotificationsController : BaseController
     {
         public NotificationsController(IImageContestSystemData data) : base(data)
