@@ -24,7 +24,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contests", "Index", "Contests")</li>
+                    <li>@Html.ActionLink("MyContests", "Index", "Contests")</li>
                     <li>@Html.ActionLink("Create Contests", "Create", "Contests")</li>
                     <li>@Html.ActionLink("Votes", "Index", "Vote")</li>
                     <li>@Html.ActionLink("Notifications","Index","Notifications")</li>
@@ -35,6 +35,7 @@
     </div>
     <div class="container body-content">
         <div id="status"></div>
+        @Html.Partial("_Notifications")
         @RenderBody()
         <hr />
         <footer>

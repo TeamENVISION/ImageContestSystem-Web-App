@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Net;
 using System.Web.UI.WebControls.WebParts;
 using Glimpse.Core.Extensions;
+using ImageContestSystem.Web.Extensions;
 using Ninject.Infrastructure.Language;
 using WebGrease.Css.Extensions;
 
@@ -123,6 +124,7 @@ namespace ImageContestSystem.Web.Controllers
                 contest.Voters = GetVoters(contest.ContestId,model, getVoters);
                 this.ContestData.SaveChanges();
 
+                this.AddNotification("Contest Create",NotificationType.INFO);
                 return this.RedirectToAction("Index");
             }
 
@@ -147,6 +149,7 @@ namespace ImageContestSystem.Web.Controllers
 
             if (contest == null)
             {
+                this.AddNotification("There are now such a contest",NotificationType.ERROR);
                 return  this.RedirectToAction("Index");
             }
            
@@ -187,7 +190,8 @@ namespace ImageContestSystem.Web.Controllers
 
             this.ContestData.Contest.Update(contest);
             this.ContestData.SaveChanges();
-
+            
+            this.AddNotification("Successfuly update contest",NotificationType.SUCCESS);
             return this.RedirectToAction("Index");
         }
 
