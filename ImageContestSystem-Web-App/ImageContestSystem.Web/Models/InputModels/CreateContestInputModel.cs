@@ -23,7 +23,6 @@ namespace ImageContestSystem.Web.Models.InputModels
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
 
-        //still not working
         [DateGreaterThan("EndDate", "StartDate", CompareType.GreaterThan)]
         public DateTime EndDate { get; set; }
 
